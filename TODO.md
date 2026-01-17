@@ -115,11 +115,27 @@
 
 ### 2.3 - Politiques RLS (Row Level Security)
 
-- [ ] Politique `profiles` : SELECT → Public / INSERT, UPDATE → Own only
-- [ ] Politique `boulders` : SELECT → Public si `is_public=true`, Own sinon
-- [ ] Politique `boulders` : INSERT, UPDATE, DELETE → Own only
-- [ ] Politique Storage `boulders` : SELECT → Public si `is_public=true`
-- [ ] Politique Storage `boulders` : UPLOAD, DELETE → Own only
+```sql
+-- ✅ IMPLÉMENTÉ (migrations/003_rls_policies.sql)
+
+-- Trigger automatique de création de profil
+- [x] handle_new_user() : Créer profil lors inscription (SECURITY DEFINER)
+- [x] on_auth_user_created : Trigger AFTER INSERT sur auth.users
+
+-- Politiques RLS Tables
+- [x] Politique `profiles` : SELECT → Public / INSERT, UPDATE → Own only
+- [x] Politique `boulders` : SELECT → Actifs (deleted_at IS NULL)
+- [x] Politique `boulders` : INSERT, UPDATE, DELETE → Own only
+- [x] Politique `betas` : SELECT → Public (si boulder actif) OU Own
+- [x] Politique `betas` : INSERT, UPDATE, DELETE → Own only
+
+-- Politiques RLS Storage
+- [x] Storage `boulders` : SELECT → Via subquery (si beta publique OU own)
+- [x] Storage `boulders` : INSERT, UPDATE → Own folder ({user_id}/)
+- [x] Storage `boulders` : DELETE → Si pas de boulder référençant
+- [x] Storage `thumbnails` : SELECT → Public (anonymous OK)
+- [x] Storage `thumbnails` : INSERT, UPDATE, DELETE → Authenticated
+```
 
 ### 2.4 - Tests d'Intégration RLS
 
