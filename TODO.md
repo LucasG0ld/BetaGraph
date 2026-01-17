@@ -9,10 +9,10 @@
 ## Phase 1 : Infrastructure & Arborescence
 
 ### 1.1 - Initialisation du Projet
-- [ ] Créer le projet Next.js 14 (App Router) avec TypeScript strict
-- [ ] Configurer PNPM/NPM workspace
-- [ ] Initialiser Git avec `.gitignore` complet
-- [ ] Créer `.env.example` avec structure pour Supabase
+- [x] Créer le projet Next.js 15 (App Router) avec TypeScript strict
+- [x] Configurer PNPM/NPM workspace
+- [x] Initialiser Git avec `.gitignore` complet
+- [x] Créer `.env.example` avec structure pour Supabase
 
 ### 1.2 - Configuration de l'Environnement
 - [ ] Configurer ESLint + Prettier
