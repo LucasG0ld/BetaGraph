@@ -72,28 +72,45 @@
 ### 2.2 - Schema Database (Migrations SQL)
 
 ```sql
--- Table: profiles
-- [ ] id (uuid, ref auth.users)
-- [ ] username (text)
-- [ ] preferred_grading_system (enum: 'fontainebleau' | 'v_scale')
-- [ ] created_at (timestamp)
+-- ✅ IMPLÉMENTÉ (Modèle 2 Tables: boulders + betas)
 
--- Table: boulders
-- [ ] id (uuid, pk)
-- [ ] user_id (uuid, fk → profiles)
-- [ ] name (text)
-- [ ] location (text)
-- [ ] grade_value (text) -- Stocke la cotation source (ex: "7A")
-- [ ] grade_system (enum: 'fontainebleau' | 'v_scale')
-- [ ] image_url (text) -- URL vers Storage
-- [ ] drawing_data (jsonb) -- Schéma Konva
-- [ ] created_at (timestamp)
-- [ ] updated_at (timestamp) -- CRITICAL pour synchro conflict resolution
-- [ ] is_public (boolean)
+-- Table: profiles
+- [x] id (uuid, ref auth.users)
+- [x] username (text, unique)
+- [x] preferred_grading_system (enum: 'fontainebleau' | 'v_scale')
+- [x] created_at (timestamp)
+
+-- Table: boulders (Images de blocs physiques)
+- [x] id (uuid, pk)
+- [x] creator_id (uuid, fk → profiles) -- Nullable (SET NULL on delete)
+- [x] name (text)
+- [x] location (text, nullable)
+- [x] image_url (text) -- URL vers Storage
+- [x] deleted_at (timestamp, nullable) -- Soft delete
+- [x] created_at (timestamp)
+
+-- Table: betas (Tracés utilisateur sur boulders)
+- [x] id (uuid, pk)
+- [x] boulder_id (uuid, fk → boulders) -- CASCADE on delete
+- [x] user_id (uuid, fk → profiles) -- CASCADE on delete
+- [x] grade_value (text) -- Cotation (ex: "7A")
+- [x] grade_system (enum: 'fontainebleau' | 'v_scale')
+- [x] drawing_data (jsonb) -- Schéma Konva
+- [x] is_public (boolean, default false)
+- [x] created_at (timestamp)
+- [x] updated_at (timestamp) -- Auto-updated via trigger
 
 -- Buckets Storage:
-- [ ] boulders (Privé par défaut, RLS)
-- [ ] thumbnails (Public pour OpenGraph)
+- [x] boulders (Privé par défaut, RLS)
+- [x] thumbnails (Public pour OpenGraph)
+
+-- Triggers:
+- [x] update_betas_updated_at (auto-update updated_at)
+
+-- Documentation:
+- [x] docs/database/schema.md (ERD Mermaid + examples)
+- [x] migrations/001_initial_schema.sql
+- [x] migrations/002_storage_buckets.sql
 ```
 
 ### 2.3 - Politiques RLS (Row Level Security)
