@@ -9,18 +9,21 @@
 ## Phase 1 : Infrastructure & Arborescence
 
 ### 1.1 - Initialisation du Projet
+
 - [x] Créer le projet Next.js 15 (App Router) avec TypeScript strict
 - [x] Configurer PNPM/NPM workspace
 - [x] Initialiser Git avec `.gitignore` complet
 - [x] Créer `.env.example` avec structure pour Supabase
 
 ### 1.2 - Configuration de l'Environnement
-- [ ] Configurer ESLint + Prettier
-- [ ] Ajouter Husky (pre-commit hook pour lint)
-- [ ] Configurer `tsconfig.json` (strict mode, path aliases `@/*`)
-- [ ] Créer `tailwind.config.ts` avec tokens de Design System
+
+- [x] Configurer ESLint + Prettier
+- [x] Ajouter Husky (pre-commit hook pour lint)
+- [x] Configurer `tsconfig.json` (strict mode, path aliases `@/*`)
+- [x] Créer `tailwind.config.ts` avec tokens de Design System
 
 ### 1.3 - Arborescence Feature-Based
+
 - [ ] Créer `src/features/auth/`
 - [ ] Créer `src/features/boulder/`
 - [ ] Créer `src/features/canvas/`
@@ -33,6 +36,7 @@
 - [ ] Créer `src/constants/` (Grading tables, color presets)
 
 ### 1.4 - Installation des Dépendances Core
+
 - [ ] Installer Next.js, React, TypeScript
 - [ ] Installer Tailwind CSS + PostCSS
 - [ ] Installer Zustand + Middleware (persist, zundo)
@@ -47,6 +51,7 @@
 - [ ] Installer clsx + tailwind-merge (cn utility)
 
 ### ✅ Validation Phase 1
+
 - [ ] `npm run lint` → Pas d'erreur
 - [ ] `npm run build` → Build réussi
 - [ ] Structure des dossiers conforme à `02_structural_rules.md`
@@ -56,6 +61,7 @@
 ## Phase 2 : Sécurité & Auth (RLS First)
 
 ### 2.1 - Configuration Supabase
+
 - [ ] Créer le projet Supabase
 - [ ] Ajouter les variables d'env dans `.env.local` et `.env.example`
 - [ ] Créer le client Supabase SSR (`src/lib/supabase/server.ts`)
@@ -63,6 +69,7 @@
 - [ ] Créer middleware Next.js pour refresh des tokens
 
 ### 2.2 - Schema Database (Migrations SQL)
+
 ```sql
 -- Table: profiles
 - [ ] id (uuid, ref auth.users)
@@ -89,6 +96,7 @@
 ```
 
 ### 2.3 - Politiques RLS (Row Level Security)
+
 - [ ] Politique `profiles` : SELECT → Public / INSERT, UPDATE → Own only
 - [ ] Politique `boulders` : SELECT → Public si `is_public=true`, Own sinon
 - [ ] Politique `boulders` : INSERT, UPDATE, DELETE → Own only
@@ -96,6 +104,7 @@
 - [ ] Politique Storage `boulders` : UPLOAD, DELETE → Own only
 
 ### 2.4 - Tests d'Intégration RLS
+
 - [ ] Installer Supabase CLI
 - [ ] Écrire test : Utilisateur A ne peut pas lire boulder privé de B
 - [ ] Écrire test : Utilisateur A peut lire boulder public de B
@@ -103,6 +112,7 @@
 - [ ] Écrire test : Upload d'image respecte les politiques
 
 ### 2.5 - Feature Auth UI
+
 - [ ] Créer schéma Zod `authSchema` (email, password)
 - [ ] Créer `features/auth/components/SignInForm.tsx`
 - [ ] Créer `features/auth/components/SignUpForm.tsx`
@@ -115,6 +125,7 @@
 - [ ] Créer page `app/(auth)/reset-password/page.tsx`
 
 ### ✅ Validation Phase 2
+
 - [ ] `npm run typecheck` → Aucune erreur TypeScript
 - [ ] Tests RLS → Tous au vert
 - [ ] Inscription/Connexion fonctionnelle
@@ -125,17 +136,20 @@
 ## Phase 3 : Pipeline de Traitement d'Image (EXIF/WebP)
 
 ### 3.1 - Schéma Zod pour Validation Image
+
 - [ ] Créer `src/lib/schemas/image.schema.ts`
 - [ ] Définir `ImageUploadSchema` (type, size max 10MB, formats acceptés)
 - [ ] Définir `ProcessedImageSchema` (url, width, height, orientation)
 
 ### 3.2 - Utilitaire de Normalisation EXIF
+
 - [ ] Créer `src/lib/utils/normalizeImageOrientation.ts`
 - [ ] Utiliser `blueimp-load-image` pour lire EXIF
 - [ ] Retourner un Blob avec orientation corrigée (rotation appliquée)
 - [ ] Gérer les cas : Portrait (90°), Landscape inversé (180°), etc.
 
 ### 3.3 - Utilitaire de Compression WebP
+
 - [ ] Créer `src/lib/utils/compressImage.ts`
 - [ ] Utiliser `browser-image-compression` avec options :
   - `maxSizeMB: 2`
@@ -146,6 +160,7 @@
 - [ ] Retourner un Blob WebP optimisé
 
 ### 3.4 - Pipeline Complet (Orchestration)
+
 - [ ] Créer `src/lib/utils/processImageForUpload.ts`
 - [ ] Étape 1 : Validation Zod du fichier brut
 - [ ] Étape 2 : Normalisation EXIF (orientation)
@@ -153,18 +168,21 @@
 - [ ] Étape 4 : Retourner `ProcessedImageSchema` (Blob + metadata)
 
 ### 3.5 - Upload vers Supabase Storage
+
 - [ ] Créer `src/lib/supabase/uploadBoulderImage.ts`
 - [ ] Générer un nom de fichier unique (uuid + `.webp`)
 - [ ] Upload vers bucket `boulders` avec path `user_id/boulder_id.webp`
 - [ ] Retourner l'URL publique
 
 ### 3.6 - Hook d'Upload Complet
+
 - [ ] Créer `src/features/boulder/hooks/useImageUpload.ts`
 - [ ] États : `isProcessing`, `progress`, `error`
 - [ ] Appeler pipeline complet : Process → Upload → Retourner URL
 - [ ] Gestion d'erreur avec messages utilisateur
 
 ### ✅ Validation Phase 3
+
 - [ ] Test : Upload image portrait (EXIF 90°) → Affichée correctement
 - [ ] Test : Upload image > 5MB → Compressée sous 2MB
 - [ ] Test : Upload JPEG → Convertie en WebP
@@ -175,6 +193,7 @@
 ## Phase 4 : Moteur Canvas (Maths & Coordonnées Relatives)
 
 ### 4.1 - Schéma Zod pour Drawing Data
+
 - [ ] Créer `src/lib/schemas/drawing.schema.ts`
 - [ ] Définir `PointSchema` : `{ x: number (0-100), y: number (0-100) }`
 - [ ] Définir `LineSchema` : `{ id, points: PointSchema[], color, width, tool: 'brush' }`
@@ -182,6 +201,7 @@
 - [ ] Définir `DrawingDataSchema` : `{ lines: LineSchema[], shapes: ShapeSchema[] }`
 
 ### 4.2 - Zustand Store Canvas
+
 - [ ] Créer `src/features/canvas/store/canvasStore.ts`
 - [ ] État :
   - `backgroundImage: { url, width, height } | null`
@@ -200,22 +220,26 @@
 - [ ] Middleware Zundo → Gestion de l'historique
 
 ### 4.3 - Utilitaire de Calcul de Ratio (Responsive Canvas)
+
 - [ ] Créer `src/features/canvas/utils/calculateCanvasRatio.ts`
 - [ ] Input : `containerWidth`, `containerHeight`, `imageWidth`, `imageHeight`
 - [ ] Output : `{ scale, offsetX, offsetY }` pour `object-fit: contain`
 - [ ] Logique : Calculer le ratio pour que l'image tienne sans déformation
 
 ### 4.4 - Utilitaire de Conversion Coordonnées
+
 - [ ] Créer `src/features/canvas/utils/coordsConverter.ts`
 - [ ] `absoluteToRelative(x, y, canvasWidth, canvasHeight)` → `{ x: 0-100, y: 0-100 }`
 - [ ] `relativeToAbsolute(x, y, canvasWidth, canvasHeight)` → `{ x: px, y: px }`
 
 ### 4.5 - Utilitaire de Simplification de Tracés
+
 - [ ] Créer `src/features/canvas/utils/simplifyPath.ts`
 - [ ] Utiliser `simplify-js` avec tolérance de 2-3 pixels
 - [ ] Appliquer lors du `onMouseUp` / `onTouchEnd`
 
 ### 4.6 - Composant Canvas Principal
+
 - [ ] Créer `src/features/canvas/components/DrawingCanvas.tsx` ('use client')
 - [ ] Utiliser `<Stage>` et `<Layer>` de React-Konva
 - [ ] Gérer le redimensionnement avec `useEffect` + listener `resize`
@@ -224,6 +248,7 @@
 - [ ] Afficher les `<Circle>` (marqueurs)
 
 ### 4.7 - Gestion des Events de Dessin
+
 - [ ] Dans `DrawingCanvas.tsx` :
 - [ ] `onMouseDown` / `onTouchStart` → Initialiser nouveau tracé
 - [ ] `onMouseMove` / `onTouchMove` → Ajouter points (throttle à 16ms via rAF)
@@ -231,6 +256,7 @@
 - [ ] Convertir coordonnées absolues → relatives avant stockage
 
 ### 4.8 - Gestion du Zoom/Pan Mobile
+
 - [ ] Créer hook `src/features/canvas/hooks/useCanvasGestures.ts`
 - [ ] Utiliser `@use-gesture/react` : `usePinch`, `useDrag`
 - [ ] États : `scale`, `offset`
@@ -238,6 +264,7 @@
 - [ ] **Désactiver le scroll natif** pendant le dessin (CSS `touch-action: none`)
 
 ### 4.9 - Toolbar d'Outils
+
 - [ ] Créer `src/features/canvas/components/Toolbar.tsx`
 - [ ] Boutons : Pinceau, Cercle, Gomme
 - [ ] Sélecteur de couleur (Palette preset + Color Picker)
@@ -245,6 +272,7 @@
 - [ ] Animation rétractable (Framer Motion) pour maximiser l'espace
 
 ### ✅ Validation Phase 4
+
 - [ ] Test : Dessiner sur mobile → Tracé fluide sans lag
 - [ ] Test : Redimensionner fenêtre → Tracé reste aligné avec l'image
 - [ ] Test : Zoom pinch → Canvas zoome sans perte de qualité
@@ -256,6 +284,7 @@
 ## Phase 5 : Persistance & Synchro Cloud
 
 ### 5.1 - Schéma Zod pour Boulder Metadata
+
 - [ ] Créer `src/features/boulder/schemas/boulder.schema.ts`
 - [ ] Définir `BoulderMetadataSchema` :
   - `name: string`
@@ -265,12 +294,14 @@
   - `is_public: boolean`
 
 ### 5.2 - Server Action : Créer un Boulder
+
 - [ ] Créer `src/features/boulder/actions/createBoulder.ts`
 - [ ] Valider input avec `BoulderMetadataSchema`
 - [ ] Insérer dans table `boulders` (sans drawing_data)
 - [ ] Retourner `boulder_id`
 
 ### 5.3 - Server Action : Sauvegarder le Canvas
+
 - [ ] Créer `src/features/boulder/actions/saveBoulderCanvas.ts`
 - [ ] Input : `boulder_id`, `drawingData` (validé par `DrawingDataSchema`)
 - [ ] Logique de résolution de conflit :
@@ -281,6 +312,7 @@
 - [ ] Retourner statut : `success | conflict`
 
 ### 5.4 - Logique de Sauvegarde Automatique
+
 - [ ] Créer `src/features/canvas/hooks/useAutoSave.ts`
 - [ ] Toutes les 5 secondes :
   - Sauvegarder dans `localStorage` (via Zustand Persist)
@@ -288,6 +320,7 @@
 - [ ] Afficher indicateur visuel (Icône checkmark verte) lors de la réussite
 
 ### 5.5 - Logique de Récupération au Démarrage
+
 - [ ] Créer `src/features/boulder/hooks/useLoadBoulder.ts`
 - [ ] Au montage du composant :
   - Récupérer `boulder_id` depuis URL
@@ -298,6 +331,7 @@
 - [ ] Initialiser le Zustand store avec les données
 
 ### 5.6 - UI de Résolution de Conflit
+
 - [ ] Créer `src/features/boulder/components/ConflictResolutionModal.tsx`
 - [ ] Afficher :
   - Timestamp local vs serveur
@@ -306,6 +340,7 @@
 - [ ] Retourner le choix utilisateur à `saveBoulderCanvas`
 
 ### ✅ Validation Phase 5
+
 - [ ] Test : Créer boulder → Sauvegarde réussie
 - [ ] Test : Dessiner → Auto-save toutes les 5s
 - [ ] Test : Simuler conflit (éditer depuis 2 devices) → Modal s'affiche
@@ -317,6 +352,7 @@
 ## Phase 6 : Système de Cotation (Fontainebleau ↔ V-Scale)
 
 ### 6.1 - Tables de Correspondance
+
 - [ ] Créer `src/constants/gradingTables.ts`
 - [ ] Définir `fontainebleauGrades: string[]` (3, 4, 5, 5+, 6A, 6A+, ..., 9A)
 - [ ] Définir `vScaleGrades: string[]` (VB, V0, V1, ..., V17)
@@ -324,11 +360,13 @@
   - Exemple : `{ '6A': 'V3', '6A+': 'V3', '6B': 'V4', ... }`
 
 ### 6.2 - Utilitaire de Conversion
+
 - [ ] Créer `src/features/grading/utils/convertGrade.ts`
 - [ ] `convertGrade(grade, fromSystem, toSystem)` → `{ converted: string, isApproximate: boolean }`
 - [ ] Si conversion non bijective → Retourner `isApproximate: true`
 
 ### 6.3 - Composant Affichage de Cotation
+
 - [ ] Créer `src/features/grading/components/GradeDisplay.tsx`
 - [ ] Props : `originalGrade`, `originalSystem`, `userPreferredSystem`
 - [ ] Afficher :
@@ -336,17 +374,20 @@
   - Sinon → Afficher converti avec mention "(~V4 equivalent)"
 
 ### 6.4 - Composant Sélecteur de Cotation
+
 - [ ] Créer `src/features/grading/components/GradeSelector.tsx`
 - [ ] Dropdown avec liste des cotations du système actif
 - [ ] Toggle pour changer de système (Fontainebleau ↔ V-Scale)
 - [ ] Retourner `{ grade_value, grade_system }`
 
 ### 6.5 - Settings Utilisateur (Préférence de Cotation)
+
 - [ ] Créer page `app/(app)/settings/page.tsx`
 - [ ] Toggle pour changer `preferred_grading_system`
 - [ ] Sauvegarder dans table `profiles` (UPDATE)
 
 ### ✅ Validation Phase 6
+
 - [ ] Test : Afficher "6A" en mode V-Scale → Affiche "~V3 equivalent"
 - [ ] Test : Changer de préférence → Toutes les cotations se convertissent
 - [ ] `npm run typecheck` → Aucune erreur
@@ -356,6 +397,7 @@
 ## Phase 7 : UI "High-Tech Lab" & Design System
 
 ### 7.1 - Tokens Tailwind (Design System)
+
 - [ ] Configurer `tailwind.config.ts` :
   - Colors : `primary`, `secondary`, `accent`, `background`, `surface`
   - Dark Mode : Classe `.dark` avec palette sombre par défaut
@@ -363,17 +405,20 @@
   - Animations custom : `animate-slide-in`, `animate-fade-in`
 
 ### 7.2 - Composants UI de Base (Shadcn/UI)
+
 - [ ] Installer : Button, Input, Select, Modal, Toast
 - [ ] Personnaliser les variants pour match l'identité "High-Tech Lab"
 - [ ] Ajouter `src/components/ui/Icon.tsx` (wrapper Lucide Icons)
 
 ### 7.3 - Composants Vendor (Copy-Paste)
+
 - [ ] Créer `src/components/vendor/eldora-ui/`
 - [ ] (Identifier les composants spécifiques à intégrer selon tes besoins)
 - [ ] Ajouter commentaires d'attribution en en-tête
 - [ ] Créer wrappers dans `src/components/ui/*` pour respecter le Design System
 
 ### 7.4 - Layout Principal
+
 - [ ] Créer `app/(app)/layout.tsx` :
   - Header avec logo + navigation
   - Footer minimal
@@ -381,12 +426,14 @@
 - [ ] Créer `app/(auth)/layout.tsx` (Centré, minimal)
 
 ### 7.5 - Page d'Accueil / Dashboard
+
 - [ ] Créer `app/(app)/page.tsx`
 - [ ] Afficher la liste des boulders de l'utilisateur (Grid)
 - [ ] Bouton CTA : "+ Créer une Bêta"
 - [ ] Filtres : Par cotation, par date
 
 ### 7.6 - Page Création de Boulder
+
 - [ ] Créer `app/(app)/boulder/new/page.tsx`
 - [ ] Flow :
   - Étape 1 : Upload image (Galerie ou Caméra)
@@ -394,6 +441,7 @@
   - Étape 3 : Redirection vers `/boulder/[id]/edit`
 
 ### 7.7 - Page Éditeur de Canvas
+
 - [ ] Créer `app/(app)/boulder/[id]/edit/page.tsx`
 - [ ] Charger le boulder depuis `useLoadBoulder`
 - [ ] Afficher `<DrawingCanvas />` + `<Toolbar />`
@@ -401,6 +449,7 @@
 - [ ] Bouton "Publier" → Passe `is_public` à `true`
 
 ### 7.8 - Page Visionneuse Publique
+
 - [ ] Créer `app/(public)/boulder/[id]/page.tsx`
 - [ ] Afficher l'image + dessin (lecture seule)
 - [ ] Afficher métadonnées (Nom, Cotation, Auteur)
@@ -408,11 +457,13 @@
 - [ ] Générer meta tags OpenGraph dynamiques
 
 ### 7.9 - Animations (Framer Motion)
+
 - [ ] Toolbar rétractable avec transition `spring`
 - [ ] Modal de conflit avec `fadeIn`
 - [ ] Liste des boulders avec `stagger`
 
 ### ✅ Validation Phase 7
+
 - [ ] Test : Navigation fluide entre les pages
 - [ ] Test : Dark Mode fonctionne sur tous les composants
 - [ ] Test : UI responsive (Mobile, Tablet, Desktop)
@@ -424,17 +475,20 @@
 ## Phase 8 : Partage & OpenGraph
 
 ### 8.1 - Génération de Thumbnail (Canvas Snapshot)
+
 - [ ] Créer `src/features/share/utils/generateThumbnail.ts`
 - [ ] Utiliser `.toDataURL()` de Konva pour capturer le canvas
 - [ ] Convertir en Blob
 - [ ] Upload vers bucket `thumbnails` (public)
 
 ### 8.2 - Server Action : Publier un Boulder
+
 - [ ] Créer `src/features/boulder/actions/publishBoulder.ts`
 - [ ] Générer le thumbnail
 - [ ] UPDATE `boulders` : `is_public = true` + `thumbnail_url`
 
 ### 8.3 - Meta Tags OpenGraph Dynamiques
+
 - [ ] Dans `app/(public)/boulder/[id]/page.tsx` :
 - [ ] Utiliser `generateMetadata()` de Next.js
 - [ ] Fetch boulder depuis Supabase
@@ -444,12 +498,14 @@
   - `og:image` : URL du thumbnail
 
 ### 8.4 - Composant Partage
+
 - [ ] Créer `src/features/share/components/ShareButton.tsx`
 - [ ] Copier lien dans le presse-papier
 - [ ] Toast de confirmation
 - [ ] (Optionnel) Intégration Web Share API pour partage natif
 
 ### ✅ Validation Phase 8
+
 - [ ] Test : Publier boulder → Thumbnail généré
 - [ ] Test : Partager lien sur WhatsApp → Preview s'affiche correctement
 - [ ] Test : Meta tags valides (via Open Graph Debugger)
@@ -459,30 +515,36 @@
 ## Phase 9 : Optimisations & Performance Mobile
 
 ### 9.1 - Throttling des Events Canvas
+
 - [ ] Dans `DrawingCanvas.tsx` :
 - [ ] Wrapper `onMouseMove` avec `requestAnimationFrame`
 - [ ] Limiter à 30-40 FPS pendant le tracé actif
 
 ### 9.2 - Code Splitting & Lazy Loading
+
 - [ ] Lazy load `<DrawingCanvas />` avec `next/dynamic` + `ssr: false`
 - [ ] Lazy load Framer Motion animations
 - [ ] Lazy load Color Picker (vendor component)
 
 ### 9.3 - Image Optimization
+
 - [ ] Remplacer `<img>` par `<Image>` de Next.js partout
 - [ ] Ajouter `placeholder="blur"` pour les images de boulder
 
 ### 9.4 - Tests de Performance Mobile
+
 - [ ] Tester sur iPhone SE 2020 (Baseline iOS)
 - [ ] Tester sur Android milieu de gamme (ex: Samsung A52)
 - [ ] Objectif : Dessin à main levée fluide (< 50ms de latence)
 
 ### 9.5 - Fallback Canvas Natif (Si Besoin)
+
 - [ ] Si React-Konva lag sur devices bas de gamme :
 - [ ] Créer version alternative avec `<canvas>` 2D API natif
 - [ ] Feature flag pour basculer entre les 2 implémentations
 
 ### ✅ Validation Phase 9
+
 - [ ] Lighthouse Mobile Score : > 90 Performance
 - [ ] Test utilisateur réel sur mobile → Feedback positif
 - [ ] `npm run build` → Bundle size < 500KB (first load)
@@ -492,6 +554,7 @@
 ## Phase 10 : Tests, Documentation & Déploiement
 
 ### 10.1 - Tests Unitaires (Vitest)
+
 - [ ] Installer Vitest + React Testing Library
 - [ ] Tester `coordsConverter.ts`
 - [ ] Tester `convertGrade.ts`
@@ -499,11 +562,13 @@
 - [ ] Tester Zustand store (actions)
 
 ### 10.2 - Tests d'Intégration (Playwright)
+
 - [ ] Installer Playwright
 - [ ] Test E2E : Inscription → Upload → Dessiner → Publier → Visionner
 - [ ] Test RLS : Utilisateur A ne peut pas modifier boulder de B
 
 ### 10.3 - Documentation
+
 - [ ] Créer `README.md` complet :
   - Description du projet
   - Stack technique
@@ -514,17 +579,20 @@
 - [ ] Documenter les schémas Zod (JSDoc)
 
 ### 10.4 - Déploiement Vercel
+
 - [ ] Connecter repo GitHub à Vercel
 - [ ] Configurer les variables d'env (Supabase)
 - [ ] Activer Preview Deployments
 - [ ] Configurer domaine custom (si applicable)
 
 ### 10.5 - Monitoring & Analytics
+
 - [ ] Installer Vercel Analytics
 - [ ] (Optionnel) Sentry pour error tracking
 - [ ] Logs Supabase : Surveiller usage Storage
 
 ### ✅ Validation Phase 10
+
 - [ ] Tous les tests au vert
 - [ ] Deploy production réussi
 - [ ] Site accessible publiquement
@@ -535,6 +603,7 @@
 ## Notes Importantes
 
 ### 🔴 Edge Cases Critiques (Intégrés dans le Plan)
+
 1. **EXIF/Rotation** → Phase 3.2 (blueimp-load-image)
 2. **Ratio Canvas** → Phase 4.3 (calculateCanvasRatio + listener resize)
 3. **Synchro Conflict** → Phase 5.3 (Timestamp comparison + UI resolution)
@@ -542,6 +611,7 @@
 5. **Performance Mobile** → Phase 9.1 (Throttling rAF + Lazy loading)
 
 ### 📐 Règles de Qualité (À Respecter à Chaque Phase)
+
 - **TypeScript Strict** : `any` interdit, utiliser `unknown` si besoin
 - **Zod Validation** : Toute donnée externe DOIT passer par un schéma
 - **Feature-Based Structure** : Regrouper par fonctionnalité, pas par type de fichier
@@ -550,6 +620,7 @@
 - **Accessibilité** : `aria-labels`, gestion focus clavier
 
 ### 🚀 Workflow de Développement
+
 1. **Branche** : `feat/phase-X-Y-nom-tache`
 2. **Commit** : Conventional Commits (`feat(canvas): add throttling to mouse events`)
 3. **Validation** : Lint → TypeCheck → Build → Tests → Push

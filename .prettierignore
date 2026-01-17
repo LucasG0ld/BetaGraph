@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Misc
+.env*.local
+.vercel

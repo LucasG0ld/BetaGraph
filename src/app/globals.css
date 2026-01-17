@@ -3,25 +3,73 @@
 @tailwind utilities;
 
 :root {
+  /* Light Mode (fallback) */
   --background: #ffffff;
   --foreground: #171717;
+  --surface: #f5f5f5;
+  --border: #e0e0e0;
+  --accent: #00f0ff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    /* Dark Mode - "High-Tech Lab" Theme */
+    --background: #050505;
     --foreground: #ededed;
+    --surface: #121212;
+    --border: #1a1a1a;
+    --accent: #00f0ff;
   }
+}
+
+/* Force Dark Mode by default */
+:root.dark,
+:root {
+  --background: #050505;
+  --foreground: #ededed;
+  --surface: #121212;
+  --border: #1a1a1a;
+  --accent: #00f0ff;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Scrollbar Styling - High-Tech Lab */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #242424;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2e2e2e;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Gradient Text - High-Tech Lab Effect */
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-brand-accent-cyan to-brand-accent-neon bg-clip-text text-transparent;
+  }
+
+  /* Glow Effect */
+  .glow-accent {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
   }
 }
