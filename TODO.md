@@ -162,16 +162,35 @@
 
 ### 2.5 - Feature Auth UI
 
-- [ ] Créer schéma Zod `authSchema` (email, password)
-- [ ] Créer `features/auth/components/SignInForm.tsx`
-- [ ] Créer `features/auth/components/SignUpForm.tsx`
-- [ ] Créer `features/auth/components/ResetPasswordForm.tsx`
-- [ ] Créer `features/auth/actions/signIn.ts` (Server Action)
-- [ ] Créer `features/auth/actions/signUp.ts`
-- [ ] Créer `features/auth/actions/signOut.ts`
-- [ ] Créer page `app/(auth)/sign-in/page.tsx`
-- [ ] Créer page `app/(auth)/sign-up/page.tsx`
-- [ ] Créer page `app/(auth)/reset-password/page.tsx`
+```typescript
+// ✅ IMPLÉMENTÉ  
+
+// Composants UI de base (src/components/ui/)
+- [x] Button (primary, secondary, ghost + loading)
+- [x] Input (avec error state + focus cyan)
+- [x] Label (sémantique HTML)
+- [x] utils.ts (fonction cn pour merge Tailwind classes)
+
+// Logique Auth (src/features/auth/)
+- [x] Schémas Zod (authSchema: email + password + username optionnel)
+- [x] Server Actions (signIn, signUp avec redirect)
+- [x] Passage username dans options.data (trigger SQL profil)
+
+// Composants Auth
+- [x] AuthLayout (gradient bg + Framer Motion + glow border)
+- [x] SignInForm (react-hook-form + Zod + loading)
+- [x] SignUpForm (avec champ username optionnel)
+
+// Pages Next.js (app/(auth)/)
+- [x] login/page.tsx
+- [x] register/page.tsx  
+- [x] layout.tsx (route group)
+
+// Validation
+- [x] npm run typecheck (0 erreurs)
+- [x] Dark mode forcé (brand.black)
+- [x] Exports nommés uniquement
+```
 
 ### ✅ Validation Phase 2
 
