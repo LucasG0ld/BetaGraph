@@ -9,14 +9,13 @@ trigger: always_on
 1. **TODO.md** : Maintiens un fichier `TODO.md` à la racine. Mets-le à jour avant et après chaque tâche.
 2. **Rapport de Tâche** : À la fin de chaque tâche, fournis un résumé de ce qui a été fait et comment le tester.
 
-## Cycle de Validation
+## Cycle de Validation (Workflow Manuel)
+Le hook Husky automatique est désactivé pour compatibilité Windows. La validation repose sur la rigueur du développeur. Avant tout commit :
 
-Avant de considérer une tâche comme terminée, tu dois :
-
-1. **Validation Statique** : Vérifier l'absence d'erreurs TypeScript et de linting.
-2. **Tests Automatisés** : Exécuter les tests unitaires et de composants. TOUS les tests doivent être au vert.
-3. **Pre-build** : Lancer un `npm run build` pour s'assurer qu'il n'y a pas d'erreur de rendu serveur (SSR).
-4. **Validation Visuelle** : Confirmer que l'UI correspond au Userflow et est accessible (A11y).
+1. **Validation Statique (CRITIQUE)** : Exécuter manuellement `npm run precommit` (lance `typecheck` et `lint`). Vérifier que la sortie terminal est 100% verte.
+2. **Tests Automatisés** : Exécuter les tests unitaires/intégration.
+3. **Pre-build** : Lancer un `npm run build` pour s'assurer de l'absence d'erreurs SSR.
+4. **Validation Visuelle** : Confirmer l'UI et l'accessibilité (A11y).
 
 ## Protocole Git
 
