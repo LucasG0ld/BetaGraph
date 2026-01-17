@@ -245,9 +245,9 @@
 
 ### 3.1 - Schéma Zod pour Validation Image
 
-- [ ] Créer `src/lib/schemas/image.schema.ts`
-- [ ] Définir `ImageUploadSchema` (type, size max 10MB, formats acceptés)
-- [ ] Définir `ProcessedImageSchema` (url, width, height, orientation)
+- [x] Créer `src/lib/schemas/image.schema.ts`
+- [x] Définir `ImageUploadSchema` (type, size max 15MB, formats JPEG/PNG/WebP/HEIC)
+- [x] Définir `ProcessedImageSchema` (blob, width, height, aspectRatio, format, size, orientation)
 
 ### 3.2 - Utilitaire de Normalisation EXIF
 

@@ -1,1 +1,31 @@
-npm run typecheck && npm run lint
+#!/bin/sh
+echo "==================================="
+echo "Running pre-commit checks..."
+echo "==================================="
+echo ""
+
+echo "[1/2] TypeScript typecheck..."
+npm run typecheck
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "ERROR: Typecheck failed!"
+  echo "Fix TypeScript errors before committing."
+  exit 1
+fi
+echo "OK - Typecheck passed"
+echo ""
+
+echo "[2/2] ESLint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "ERROR: Lint failed!"
+  echo "Fix linting errors before committing."
+  exit 1
+fi
+echo "OK - Lint passed"
+echo ""
+
+echo "==================================="
+echo "All checks passed! Committing..."
+echo "==================================="
