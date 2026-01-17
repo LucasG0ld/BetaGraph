@@ -269,11 +269,10 @@
 
 ### 3.4 - Pipeline Complet (Orchestration)
 
-- [ ] Créer `src/lib/utils/processImageForUpload.ts`
-- [ ] Étape 1 : Validation Zod du fichier brut
-- [ ] Étape 2 : Normalisation EXIF (orientation)
-- [ ] Étape 3 : Compression WebP
-- [ ] Étape 4 : Retourner `ProcessedImageSchema` (Blob + metadata)
+- [x] Créer `src/lib/utils/image/process-image.ts`
+- [x] Orchestrer : Validation (3.1) → Normalisation (3.2) → Compression (3.3)
+- [x] Retourner `ProcessedImage` conforme au schéma Zod
+- [x] Modifier `image.schema.ts` : format enum `['webp', 'jpeg']`
 
 ### 3.5 - Upload vers Supabase Storage
 

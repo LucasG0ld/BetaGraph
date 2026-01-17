@@ -61,11 +61,11 @@ export type ImageUpload = z.infer<typeof ImageUploadSchema>;
  * - Dimensions minimales : 600px (largeur OU hauteur)
  * - Dimensions maximales : 4096px (sécurité mémoire mobile)
  *
- * @property {Blob} blob - Blob WebP optimisé prêt pour l'upload
+ * @property {Blob} blob - Blob optimisé prêt pour l'upload (WebP ou JPEG)
  * @property {number} width - Largeur en pixels de l'image finale
  * @property {number} height - Hauteur en pixels de l'image finale
  * @property {number} aspectRatio - Ratio largeur/hauteur (crucial pour Canvas responsive)
- * @property {'webp'} format - Format forcé à WebP
+ * @property {'webp' | 'jpeg'} format - Format final (WebP prioritaire, JPEG si fallback)
  * @property {number} sizeInBytes - Taille finale en octets (doit être ≤ 2Mo)
  * @property {number} [orientation] - Code orientation EXIF original (1-8), optionnel
  *
@@ -76,7 +76,7 @@ export type ImageUpload = z.infer<typeof ImageUploadSchema>;
  *   width: 1920,
  *   height: 1080,
  *   aspectRatio: 1920 / 1080, // 1.777...
- *   format: 'webp',
+ *   format: 'webp', // ou 'jpeg' selon stratégie de fallback
  *   sizeInBytes: 1_500_000, // 1.5 Mo
  * };
  * ```
@@ -112,7 +112,9 @@ export const ProcessedImageSchema = z.object({
             message:
                 "Le ratio d'aspect doit être entre 0.25 (très vertical) et 4 (très horizontal).",
         }),
-    format: z.literal('webp'),
+    format: z.enum(['webp', 'jpeg'], {
+        message: 'Le format final doit être WebP ou JPEG.',
+    }),
     sizeInBytes: z
         .number()
         .int()
