@@ -37,24 +37,24 @@
 
 ### 1.4 - Installation des Dépendances Core
 
-- [ ] Installer Next.js, React, TypeScript
-- [ ] Installer Tailwind CSS + PostCSS
-- [ ] Installer Zustand + Middleware (persist, zundo)
-- [ ] Installer Zod
-- [ ] Installer React-Konva + Konva
-- [ ] Installer Framer Motion
-- [ ] Installer @supabase/ssr
-- [ ] Installer browser-image-compression
-- [ ] Installer blueimp-load-image (EXIF normalization)
-- [ ] Installer simplify-js (Path simplification)
-- [ ] Installer @use-gesture/react (Mobile gestures)
-- [ ] Installer clsx + tailwind-merge (cn utility)
+- [x] Installer Next.js, React, TypeScript
+- [x] Installer Tailwind CSS + PostCSS
+- [x] Installer Zustand + Middleware (persist, zundo)
+- [x] Installer Zod
+- [x] Installer React-Konva + Konva
+- [x] Installer Framer Motion
+- [x] Installer @supabase/ssr
+- [x] Installer browser-image-compression
+- [x] Installer blueimp-load-image (EXIF normalization)
+- [x] Installer simplify-js (Path simplification)
+- [x] Installer @use-gesture/react (Mobile gestures)
+- [x] Installer clsx + tailwind-merge (cn utility)
 
 ### ✅ Validation Phase 1
 
-- [ ] `npm run lint` → Pas d'erreur
-- [ ] `npm run build` → Build réussi
-- [ ] Structure des dossiers conforme à `02_structural_rules.md`
+- [x] `npm run lint` → Pas d'erreur
+- [x] `npm run build` → Build réussi
+- [x] Structure des dossiers conforme à `02_structural_rules.md`
 
 ---
 
