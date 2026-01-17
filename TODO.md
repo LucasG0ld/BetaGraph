@@ -276,10 +276,10 @@
 
 ### 3.5 - Upload vers Supabase Storage
 
-- [ ] Créer `src/lib/supabase/uploadBoulderImage.ts`
-- [ ] Générer un nom de fichier unique (uuid + `.webp`)
-- [ ] Upload vers bucket `boulders` avec path `user_id/boulder_id.webp`
-- [ ] Retourner l'URL publique
+- [x] Créer `src/lib/supabase/storage.ts`
+- [x] Générer un nom de fichier unique (UUID v4)
+- [x] Upload vers bucket `boulders` avec path `userId/uuid.{format}`
+- [x] Retourner l'URL publique
 
 ### 3.6 - Hook d'Upload Complet
 
