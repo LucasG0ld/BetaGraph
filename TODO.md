@@ -194,10 +194,50 @@
 
 ### ✅ Validation Phase 2
 
-- [ ] `npm run typecheck` → Aucune erreur TypeScript
-- [ ] Tests RLS → Tous au vert
-- [ ] Inscription/Connexion fonctionnelle
-- [ ] Session persiste après refresh
+```bash
+# Phase 2 - Security & Auth : 100% TERMINÉE
+
+# 2.1 - Configuration Supabase
+- [x] Variables ENV validées (Zod)
+- [x] Clients Supabase (server, client, middleware)
+- [x] SUPABASE_SERVICE_ROLE_KEY obligatoire
+
+# 2.2 - Schema Database  
+- [x] Tables : profiles, boulders, betas
+- [x] Soft delete sur boulders
+- [x] Storage buckets : boulders, thumbnails
+- [x] Triggers updated_at
+- [x] Documentation schema.md
+
+# 2.3 - Politiques RLS
+- [x] RLS tables (profiles, boulders, betas)
+- [x] RLS Storage (boulders, thumbnails)
+- [x] Trigger profil automatique
+- [x] Structure folder {user_id}/
+
+# 2.4 - Tests RLS
+- [x] Tests pgTAP (10/10 passés)
+- [x] Validation soft-delete
+- [x] Validation ownership
+- [x] Validation anonymous access
+- [x] Documentation Supabase CLI
+
+# 2.5 - Auth UI
+- [x] Composants UI (Button, Input, Label)
+- [x] Schémas Zod validation
+- [x] Server Actions (signIn, signUp)
+- [x] Pages /login et /register
+- [x] Design high-tech lab validé
+- [x] Flow complet testé (inscription → login)
+
+# Validation Finale
+- [x] Typecheck : 0 erreurs
+- [x] Tests automatisés : 10/10
+- [x] Tests manuels : Flow auth fonctionnel
+- [x] Trigger SQL profil : Fonctionne ✅
+- [x] RLS policies : Validées ✅
+- [x] Design UI : Conforme ✅
+```
 
 ---
 
@@ -407,52 +447,6 @@
   - Boutons : "Garder Local" | "Garder Serveur" | "Annuler"
 - [ ] Retourner le choix utilisateur à `saveBoulderCanvas`
 
-### ✅ Validation Phase 2
-
-```bash
-# Phase 2 - Security & Auth : 100% TERMINÉE
-
-# 2.1 - Configuration Supabase
-- [x] Variables ENV validées (Zod)
-- [x] Clients Supabase (server, client, middleware)
-- [x] SUPABASE_SERVICE_ROLE_KEY obligatoire
-
-# 2.2 - Schema Database  
-- [x] Tables : profiles, boulders, betas
-- [x] Soft delete sur boulders
-- [x] Storage buckets : boulders, thumbnails
-- [x] Triggers updated_at
-- [x] Documentation schema.md
-
-# 2.3 - Politiques RLS
-- [x] RLS tables (profiles, boulders, betas)
-- [x] RLS Storage (boulders, thumbnails)
-- [x] Trigger profil automatique
-- [x] Structure folder {user_id}/
-
-# 2.4 - Tests RLS
-- [x] Tests pgTAP (10/10 passés)
-- [x] Validation soft-delete
-- [x] Validation ownership
-- [x] Validation anonymous access
-- [x] Documentation Supabase CLI
-
-# 2.5 - Auth UI
-- [x] Composants UI (Button, Input, Label)
-- [x] Schémas Zod validation
-- [x] Server Actions (signIn, signUp)
-- [x] Pages /login et /register
-- [x] Design high-tech lab validé
-- [x] Flow complet testé (inscription → login)
-
-# Validation Finale
-- [x] Typecheck : 0 erreurs
-- [x] Tests automatisés : 10/10
-- [x] Tests manuels : Flow auth fonctionnel
-- [x] Trigger SQL profil : Fonctionne ✅
-- [x] RLS policies : Validées ✅
-- [x] Design UI : Conforme ✅
-```
 ### ✅ Validation Phase 5
 
 - [ ] Test : Créer boulder → Sauvegarde réussie
