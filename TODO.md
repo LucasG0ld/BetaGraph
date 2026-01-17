@@ -24,16 +24,16 @@
 
 ### 1.3 - Arborescence Feature-Based
 
-- [ ] Créer `src/features/auth/`
-- [ ] Créer `src/features/boulder/`
-- [ ] Créer `src/features/canvas/`
-- [ ] Créer `src/features/grading/`
-- [ ] Créer `src/features/share/`
-- [ ] Créer `src/components/ui/` (Shadcn/UI)
-- [ ] Créer `src/components/vendor/` (Copy-paste components)
-- [ ] Créer `src/lib/` (Utilities, Zod schemas, Supabase clients)
-- [ ] Créer `src/hooks/` (Hooks partagés)
-- [ ] Créer `src/constants/` (Grading tables, color presets)
+- [x] Créer `src/features/auth/`
+- [x] Créer `src/features/boulder/`
+- [x] Créer `src/features/canvas/`
+- [x] Créer `src/features/grading/`
+- [x] Créer `src/features/share/`
+- [x] Créer `src/components/ui/` (Shadcn/UI)
+- [x] Créer `src/components/vendor/` (Copy-paste components)
+- [x] Créer `src/lib/` (Utilities, Zod schemas, Supabase clients)
+- [x] Créer `src/hooks/` (Hooks partagés)
+- [x] Créer `src/constants/` (Grading tables, color presets)
 
 ### 1.4 - Installation des Dépendances Core
 
