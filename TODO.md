@@ -63,10 +63,11 @@
 ### 2.1 - Configuration Supabase
 
 - [ ] Créer le projet Supabase
-- [ ] Ajouter les variables d'env dans `.env.local` et `.env.example`
-- [ ] Créer le client Supabase SSR (`src/lib/supabase/server.ts`)
-- [ ] Créer le client Supabase Client (`src/lib/supabase/client.ts`)
-- [ ] Créer middleware Next.js pour refresh des tokens
+- [/] Ajouter les variables d'env dans `.env.local` et `.env.example` (`.env.example` mis à jour)
+- [x] Créer le client Supabase SSR (`src/lib/supabase/server.ts`)
+- [x] Créer le client Supabase Client (`src/lib/supabase/client.ts`)
+- [x] Créer middleware Next.js pour refresh des tokens
+- [x] Créer validateur Zod pour ENV (`src/lib/env.ts`)
 
 ### 2.2 - Schema Database (Migrations SQL)
 
