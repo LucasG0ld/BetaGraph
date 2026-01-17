@@ -27,9 +27,15 @@ SELECT plan(10);
 -- Verify that soft-deleted boulders (deleted_at IS NOT NULL)
 -- are NOT visible to anonymous OR authenticated users
 
--- Setup test data
-INSERT INTO public.profiles (id, username) 
-VALUES ('00000000-0000-0000-0000-000000000001', 'test-alice');
+-- Setup test data: Create user in auth.users (trigger will create profile)
+INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, raw_user_meta_data)
+VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  'test-alice@example.com',
+  crypt('password123', gen_salt('bf')),
+  NOW(),
+  '{"username": "test-alice"}'::jsonb
+);
 
 INSERT INTO public.boulders (id, creator_id, name, image_url, deleted_at)
 VALUES (
@@ -68,10 +74,23 @@ RESET ROLE;
 -- ============================================
 -- Verify that User A cannot modify User B's beta
 
--- Setup test data
-INSERT INTO public.profiles (id, username) VALUES 
-  ('00000000-0000-0000-0000-000000000002', 'test-bob'),
-  ('00000000-0000-0000-0000-000000000003', 'test-charlie');
+-- Setup test data: Create users in auth.users (trigger creates profiles)
+INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, raw_user_meta_data)
+VALUES 
+  (
+    '00000000-0000-0000-0000-000000000002',
+    'test-bob@example.com',
+    crypt('password123', gen_salt('bf')),
+    NOW(),
+    '{"username": "test-bob"}'::jsonb
+  ),
+  (
+    '00000000-0000-0000-0000-000000000003',
+    'test-charlie@example.com',
+    crypt('password123', gen_salt('bf')),
+    NOW(),
+    '{"username": "test-charlie"}'::jsonb
+  );
 
 INSERT INTO public.boulders (id, creator_id, name, image_url)
 VALUES (
@@ -146,9 +165,15 @@ RESET ROLE;
 -- Verify that anonymous users can read public betas
 -- but NOT private betas
 
--- Setup test data
-INSERT INTO public.profiles (id, username) 
-VALUES ('00000000-0000-0000-0000-000000000004', 'test-diana');
+-- Setup test data: Create user in auth.users (trigger creates profile)
+INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, raw_user_meta_data)
+VALUES (
+  '00000000-0000-0000-0000-000000000004',
+  'test-diana@example.com',
+  crypt('password123', gen_salt('bf')),
+  NOW(),
+  '{"username": "test-diana"}'::jsonb
+);
 
 INSERT INTO public.boulders (id, creator_id, name, image_url)
 VALUES (
