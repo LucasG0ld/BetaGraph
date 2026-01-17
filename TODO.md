@@ -251,10 +251,10 @@
 
 ### 3.2 - Utilitaire de Normalisation EXIF
 
-- [ ] Créer `src/lib/utils/normalizeImageOrientation.ts`
-- [ ] Utiliser `blueimp-load-image` pour lire EXIF
-- [ ] Retourner un Blob avec orientation corrigée (rotation appliquée)
-- [ ] Gérer les cas : Portrait (90°), Landscape inversé (180°), etc.
+- [x] Créer `src/lib/utils/image/normalize-orientation.ts`
+- [x] Utiliser `blueimp-load-image` pour lire EXIF
+- [x] Retourner un Blob avec orientation corrigée (rotation appliquée)
+- [x] Gérer les cas : Portrait (90°), Landscape inversé (180°), etc.
 
 ### 3.3 - Utilitaire de Compression WebP
 
