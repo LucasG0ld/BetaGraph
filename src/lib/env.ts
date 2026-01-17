@@ -21,10 +21,10 @@ const envSchema = z.object({
     // ⚠️ DANGER: Service Role Key - NEVER expose to client
     // This key bypasses RLS and has full database access.
     // Only used in server-side code (Server Actions, Route Handlers).
+    // REQUIRED for database migrations and admin operations.
     SUPABASE_SERVICE_ROLE_KEY: z
         .string()
         .min(1, 'SUPABASE_SERVICE_ROLE_KEY cannot be empty')
-        .optional()
         .describe('Supabase service role key (server-side only, bypasses RLS)'),
 });
 
