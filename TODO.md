@@ -258,14 +258,14 @@
 
 ### 3.3 - Utilitaire de Compression WebP
 
-- [ ] Créer `src/lib/utils/compressImage.ts`
-- [ ] Utiliser `browser-image-compression` avec options :
+- [x] Créer `src/lib/utils/image/compress-image.ts`
+- [x] Utiliser `browser-image-compression` avec options :
   - `maxSizeMB: 2`
   - `maxWidthOrHeight: 1920`
   - `useWebWorker: true`
   - `fileType: 'image/webp'`
   - `initialQuality: 0.8`
-- [ ] Retourner un Blob WebP optimisé
+- [x] Retourner Blob WebP optimisé
 
 ### 3.4 - Pipeline Complet (Orchestration)
 
