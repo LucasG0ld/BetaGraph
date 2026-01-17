@@ -139,11 +139,26 @@
 
 ### 2.4 - Tests d'Intégration RLS
 
-- [ ] Installer Supabase CLI
-- [ ] Écrire test : Utilisateur A ne peut pas lire boulder privé de B
-- [ ] Écrire test : Utilisateur A peut lire boulder public de B
-- [ ] Écrire test : Utilisateur A ne peut pas modifier boulder de B
-- [ ] Écrire test : Upload d'image respecte les politiques
+```bash
+# ✅ IMPLÉMENTÉ (supabase/tests/rls_test.sql)
+
+# Infrastructure
+- [x] Installer Supabase CLI (guide: docs/testing/supabase-cli-setup.md)
+- [x] Initialiser dossier `supabase/tests/`
+
+# Tests pgTAP (10 tests total)
+- [x] Test 1.1-1.2 : Boulder soft-deleted invisible (anonymous & authenticated)
+- [x] Test 2.1 : User ne peut pas lire beta privée d'autrui
+- [x] Test 2.2 : User ne peut pas modifier beta d'autrui
+- [x] Test 2.3 : User peut modifier sa propre beta
+- [x] Test 3.1 : Anonymous peut lire beta publique
+- [x] Test 3.2 : Anonymous ne peut pas lire beta privée
+- [x] Test 4.1-4.3 : Trigger profil fonctionne (auto-création)
+
+# Exécution
+# Commande: supabase test db
+# Statut: Prêt à être exécuté après `supabase start`
+```
 
 ### 2.5 - Feature Auth UI
 
