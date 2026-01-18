@@ -394,14 +394,30 @@
 - [x] Constantes : TOLERANCE_PERCENT (0.15), TOLERANCE_PIXELS (1.5)
 ```
 
-### 4.6 - Composant Canvas Principal
+### 4.6 - Composant Canvas Principal ✅
 
-- [ ] Créer `src/features/canvas/components/DrawingCanvas.tsx` ('use client')
-- [ ] Utiliser `<Stage>` et `<Layer>` de React-Konva
-- [ ] Gérer le redimensionnement avec `useEffect` + listener `resize`
-- [ ] Afficher `<Image>` (background) avec calcul de ratio
-- [ ] Afficher les `<Line>` (tracés) avec conversion relative → absolue
-- [ ] Afficher les `<Circle>` (marqueurs)
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/components/DrawingCanvas.tsx)
+
+// 'use client' - Composant client React-Konva
+// Responsive via ResizeObserver (debounced 100ms)
+
+// Hooks créés :
+- [x] useImage(url) : Chargement HTMLImageElement pour Konva
+- [x] useContainerSize(ref) : Mesure conteneur avec debounce
+
+// Composants mémoïsés :
+- [x] LineRenderer : Rendu optimisé d'une ligne
+- [x] CircleRenderer : Rendu optimisé d'un cercle
+
+// Rendu :
+- [x] <Stage> + 2 <Layer> (image / dessin)
+- [x] Image de fond centrée (offset calculé)
+- [x] Lignes finalisées (drawingData.lines)
+- [x] Formes (drawingData.shapes)
+- [x] Tracé en cours (currentLine temps réel)
+- [x] Conversion relative → Stage via utilitaires 4.4
+```
 
 ### 4.7 - Gestion des Events de Dessin
 
