@@ -379,11 +379,20 @@
 - [x] relativeRadiusToStage() : Rayon % → pixels
 ```
 
-### 4.5 - Utilitaire de Simplification de Tracés
+### 4.5 - Utilitaire de Simplification de Tracés ✅
 
-- [ ] Créer `src/features/canvas/utils/simplifyPath.ts`
-- [ ] Utiliser `simplify-js` avec tolérance de 2-3 pixels
-- [ ] Appliquer lors du `onMouseUp` / `onTouchEnd`
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/utils/simplify-path.ts)
+
+// Algorithme Douglas-Peucker via simplify-js
+// Réduction typique : 60-80% des points
+
+- [x] simplifyPath(points, tolerance?) → Point[] simplifié
+- [x] simplifyFlatPath(flatPoints, tolerance?) → number[] simplifié
+- [x] simplifyPathWithStats() → Points + ratio de réduction
+- [x] calculateReductionRatio() → % de réduction
+- [x] Constantes : TOLERANCE_PERCENT (0.15), TOLERANCE_PIXELS (1.5)
+```
 
 ### 4.6 - Composant Canvas Principal
 
