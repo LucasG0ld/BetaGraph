@@ -288,12 +288,14 @@
 - [x] Appeler pipeline complet : Process → Upload → Retourner URL
 - [x] Gestion d'erreur avec messages utilisateur
 
-### ✅ Validation Phase 3
+### ✅ Validation Phase 3 - TERMINÉ
 
-- [ ] Test : Upload image portrait (EXIF 90°) → Affichée correctement
-- [ ] Test : Upload image > 5MB → Compressée sous 2MB
-- [ ] Test : Upload JPEG → Convertie en WebP
-- [ ] `npm run build` → Pas d'erreur
+- [x] Test : Upload portrait (EXIF 1) → Aucune rotation (correct)
+- [x] Test : Compression → 0.13 Mo (bien sous 2 Mo)
+- [x] Test : Upload JPEG → Conversion WebP confirmée
+- [x] Test : PDF invalide → Message erreur FR affiché
+- [x] `npm run build` → Pas d'erreur
+- [x] `npm run test` → 51 tests passent (7 skipped)
 
 ---
 

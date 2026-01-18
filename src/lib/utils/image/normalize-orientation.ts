@@ -1,3 +1,4 @@
+// @ts-expect-error - blueimp-load-image n'a pas de types officiels
 import loadImage from 'blueimp-load-image';
 
 /**
@@ -81,7 +82,7 @@ export async function normalizeImageOrientation(
 
         loadImage(
             file,
-            (imgOrEvent) => {
+            (imgOrEvent: HTMLCanvasElement | Event) => {
                 clearTimeout(timeoutId);
 
                 // Vérification du type de retour (Error handling)
