@@ -21,6 +21,8 @@ import {
     relativeRadiusToStage,
 } from '../utils/coords-converter';
 import { useCanvasDrawing } from '../hooks/useCanvasDrawing';
+import { useCanvasGestures } from '../hooks/useCanvasGestures';
+import type Konva from 'konva';
 
 // ============================================================================
 // TYPES
@@ -301,11 +303,18 @@ export function DrawingCanvas({
         return relativeWidthToStage(currentWidth, layout, imageWidth);
     }, [currentWidth, layout, imageWidth]);
 
+    // Hook de gestion des gestes (zoom/pan)
+    const stageRef = useRef<Konva.Stage>(null);
+    const { transform, gestureProps, isGesturing } = useCanvasGestures({
+        stageRef,
+    });
+
     // Hook de gestion des événements de dessin
     const { handlePointerDown, handlePointerMove, handlePointerUp } = useCanvasDrawing({
         layout,
         imageWidth,
         imageHeight,
+        isGesturing,
     });
 
     // États de rendu
@@ -345,10 +354,16 @@ export function DrawingCanvas({
             ref={containerRef}
             className={`relative bg-brand-black ${className}`}
             style={{ touchAction: 'none' }}
+            {...gestureProps()}
         >
             <Stage
+                ref={stageRef}
                 width={layout.stageWidth}
                 height={layout.stageHeight}
+                scaleX={transform.scale}
+                scaleY={transform.scale}
+                x={transform.x}
+                y={transform.y}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}

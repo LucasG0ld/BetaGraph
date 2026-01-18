@@ -33,6 +33,8 @@ export interface UseCanvasDrawingConfig {
     imageWidth: number;
     /** Hauteur originale de l'image */
     imageHeight: number;
+    /** Indique si un geste de navigation est en cours (désactive le dessin) */
+    isGesturing?: boolean;
 }
 
 /**
@@ -83,6 +85,7 @@ export function useCanvasDrawing({
     layout,
     imageWidth,
     imageHeight,
+    isGesturing = false,
 }: UseCanvasDrawingConfig): UseCanvasDrawingReturn {
     // Store actions
     const startLine = useCanvasStore((s) => s.startLine);
@@ -145,6 +148,15 @@ export function useCanvasDrawing({
 
     const handlePointerDown = useCallback(
         (e: KonvaEventObject<PointerEvent>) => {
+            // Ignorer si un geste de navigation est en cours
+            if (isGesturing) return;
+
+            // Ignorer si multi-touch (geste de zoom/pan)
+            const nativeEvent = e.evt as TouchEvent | MouseEvent;
+            if ('touches' in nativeEvent && nativeEvent.touches.length >= 2) {
+                return;
+            }
+
             const point = getRelativePoint(e);
             if (!point) return;
 
@@ -159,7 +171,7 @@ export function useCanvasDrawing({
                 startLine(point);
             }
         },
-        [getRelativePoint, currentTool, startLine]
+        [getRelativePoint, currentTool, startLine, isGesturing]
     );
 
     const handlePointerMove = useCallback(

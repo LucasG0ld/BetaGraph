@@ -436,13 +436,22 @@
 - [x] Conversion coords Stage → relative automatique
 ```
 
-### 4.8 - Gestion du Zoom/Pan Mobile
+### 4.8 - Gestion du Zoom/Pan Mobile ✅
 
-- [ ] Créer hook `src/features/canvas/hooks/useCanvasGestures.ts`
-- [ ] Utiliser `@use-gesture/react` : `usePinch`, `useDrag`
-- [ ] États : `scale`, `offset`
-- [ ] Appliquer transformations sur le `<Stage>` Konva
-- [ ] **Désactiver le scroll natif** pendant le dessin (CSS `touch-action: none`)
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/hooks/useCanvasGestures.ts)
+
+// @use-gesture/react : useGesture avec pinch, drag, wheel
+// Limites : 0.5x - 5x, zoom centré sur pointeur
+
+- [x] useCanvasGestures hook créé
+- [x] Pinch-to-zoom (2 doigts) centré
+- [x] Pan avec 2 doigts ou Ctrl+drag
+- [x] Wheel zoom (molette souris)
+- [x] isGesturing désactive le dessin pendant navigation
+- [x] Multi-touch detection dans useCanvasDrawing
+- [x] Transformations appliquées sur <Stage>
+```
 
 ### 4.9 - Toolbar d'Outils
 
