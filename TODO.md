@@ -348,12 +348,20 @@
 - [x] generateElementId() : Génération ID (nanoid)
 ```
 
-### 4.3 - Utilitaire de Calcul de Ratio (Responsive Canvas)
+### 4.3 - Utilitaire de Calcul de Ratio (Responsive Canvas) ✅
 
-- [ ] Créer `src/features/canvas/utils/calculateCanvasRatio.ts`
-- [ ] Input : `containerWidth`, `containerHeight`, `imageWidth`, `imageHeight`
-- [ ] Output : `{ scale, offsetX, offsetY }` pour `object-fit: contain`
-- [ ] Logique : Calculer le ratio pour que l'image tienne sans déformation
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/utils/canvas-math.ts)
+
+// Comportement object-fit: contain
+// scale = min(containerWidth/imageWidth, containerHeight/imageHeight)
+
+- [x] Interface Dimensions : { width, height }
+- [x] Interface CanvasLayout : scale, stageWidth, stageHeight, scaledWidth, scaledHeight, offsetX, offsetY
+- [x] calculateCanvasLayout(container, image) : Calcul layout complet
+- [x] isPointInsideImage(stageX, stageY, layout) : Détection clic hors image
+- [x] calculateAspectRatio(width, height) : Ratio largeur/hauteur
+```
 
 ### 4.4 - Utilitaire de Conversion Coordonnées
 
