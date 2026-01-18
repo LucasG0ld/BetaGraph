@@ -20,6 +20,7 @@ import {
     relativeWidthToStage,
     relativeRadiusToStage,
 } from '../utils/coords-converter';
+import { useCanvasDrawing } from '../hooks/useCanvasDrawing';
 
 // ============================================================================
 // TYPES
@@ -300,6 +301,13 @@ export function DrawingCanvas({
         return relativeWidthToStage(currentWidth, layout, imageWidth);
     }, [currentWidth, layout, imageWidth]);
 
+    // Hook de gestion des événements de dessin
+    const { handlePointerDown, handlePointerMove, handlePointerUp } = useCanvasDrawing({
+        layout,
+        imageWidth,
+        imageHeight,
+    });
+
     // États de rendu
     if (imageStatus === 'loading') {
         return (
@@ -341,6 +349,10 @@ export function DrawingCanvas({
             <Stage
                 width={layout.stageWidth}
                 height={layout.stageHeight}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerUp}
             >
                 {/* Layer 1: Image de fond */}
                 <Layer>

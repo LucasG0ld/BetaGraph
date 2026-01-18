@@ -419,13 +419,22 @@
 - [x] Conversion relative → Stage via utilitaires 4.4
 ```
 
-### 4.7 - Gestion des Events de Dessin
+### 4.7 - Gestion des Events de Dessin ✅
 
-- [ ] Dans `DrawingCanvas.tsx` :
-- [ ] `onMouseDown` / `onTouchStart` → Initialiser nouveau tracé
-- [ ] `onMouseMove` / `onTouchMove` → Ajouter points (throttle à 16ms via rAF)
-- [ ] `onMouseUp` / `onTouchUp` → Simplifier tracé + Stocker dans Zustand
-- [ ] Convertir coordonnées absolues → relatives avant stockage
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/hooks/useCanvasDrawing.ts)
+
+// Handlers intégrés sur <Stage> : onPointerDown/Move/Up/Leave
+// Throttle via rAF (60fps max)
+// Simplification automatique dans finalizeLine()
+
+- [x] useCanvasDrawing hook créé (logique extraite du composant)
+- [x] handlePointerDown : Vérifie isPointInsideImage, démarre tracé/cercle
+- [x] handlePointerMove : Throttle + updateCurrentLine
+- [x] handlePointerUp : finalizeLine() ou addShape() selon outil
+- [x] Support brush, eraser (destination-out), circle
+- [x] Conversion coords Stage → relative automatique
+```
 
 ### 4.8 - Gestion du Zoom/Pan Mobile
 

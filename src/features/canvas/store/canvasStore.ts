@@ -12,6 +12,7 @@ import {
     type Point,
     type Shape,
 } from '@/lib/schemas/drawing.schema';
+import { simplifyPath, TOLERANCE_PERCENT } from '../utils/simplify-path';
 
 // ============================================================================
 // TYPES
@@ -189,14 +190,17 @@ export const useCanvasStore = create<CanvasStore>()(
                         return;
                     }
 
+                    // Simplifier les points pour réduire la taille du stockage
+                    const simplifiedPoints = simplifyPath(currentLine, TOLERANCE_PERCENT);
+
                     // Déterminer le type d'outil ligne
                     const lineTool: LineTool = currentTool === 'eraser' ? 'eraser' : 'brush';
 
-                    // Créer la nouvelle ligne
+                    // Créer la nouvelle ligne avec les points simplifiés
                     const newLine: Line = {
                         id: nanoid(),
                         tool: lineTool,
-                        points: currentLine,
+                        points: simplifiedPoints,
                         color: currentColor,
                         width: currentWidth,
                     };
