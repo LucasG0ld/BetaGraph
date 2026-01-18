@@ -283,10 +283,10 @@
 
 ### 3.6 - Hook d'Upload Complet
 
-- [ ] Créer `src/features/boulder/hooks/useImageUpload.ts`
-- [ ] États : `isProcessing`, `progress`, `error`
-- [ ] Appeler pipeline complet : Process → Upload → Retourner URL
-- [ ] Gestion d'erreur avec messages utilisateur
+- [x] Créer `src/features/boulder/hooks/useImageUpload.ts`
+- [x] États : `isProcessing`, `isUploading`, `error`, `imageUrl`, `imageData`
+- [x] Appeler pipeline complet : Process → Upload → Retourner URL
+- [x] Gestion d'erreur avec messages utilisateur
 
 ### ✅ Validation Phase 3
 
