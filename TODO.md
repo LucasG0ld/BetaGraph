@@ -363,11 +363,21 @@
 - [x] calculateAspectRatio(width, height) : Ratio largeur/hauteur
 ```
 
-### 4.4 - Utilitaire de Conversion Coordonnées
+### 4.4 - Utilitaire de Conversion Coordonnées ✅
 
-- [ ] Créer `src/features/canvas/utils/coordsConverter.ts`
-- [ ] `absoluteToRelative(x, y, canvasWidth, canvasHeight)` → `{ x: 0-100, y: 0-100 }`
-- [ ] `relativeToAbsolute(x, y, canvasWidth, canvasHeight)` → `{ x: px, y: px }`
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/utils/coords-converter.ts)
+
+// Précision : 3 décimales (±0.04px sur 4K)
+// Clamping : 0-100 automatique
+
+- [x] stageToRelative(stageX, stageY, layout, imageW, imageH) → Point (0-100)
+- [x] relativeToStage(relX, relY, layout, imageW, imageH) → { x, y } (pixels)
+- [x] flatPointsToRelative(flatPoints, ...) → Point[] (conversion array Konva)
+- [x] relativePointsToFlat(points, ...) → number[] (pour <Line points={} />)
+- [x] relativeWidthToStage() : Épaisseur % → pixels
+- [x] relativeRadiusToStage() : Rayon % → pixels
+```
 
 ### 4.5 - Utilitaire de Simplification de Tracés
 
