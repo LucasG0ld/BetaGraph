@@ -453,13 +453,25 @@
 - [x] Transformations appliquées sur <Stage>
 ```
 
-### 4.9 - Toolbar d'Outils
+### 4.9 - Toolbar d'Outils ✅
 
-- [ ] Créer `src/features/canvas/components/Toolbar.tsx`
-- [ ] Boutons : Pinceau, Cercle, Gomme
-- [ ] Sélecteur de couleur (Palette preset + Color Picker)
-- [ ] Boutons Undo/Redo
-- [ ] Animation rétractable (Framer Motion) pour maximiser l'espace
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/components/)
+
+// Composants créés :
+- [x] ToolButton.tsx : Bouton générique avec animations Framer Motion
+- [x] CanvasToolbar.tsx : Toolbar flottante complète
+
+// Fonctionnalités :
+- [x] Boutons outils : Brush (✏️), Circle (⭕), Eraser (🧽)
+- [x] Presets couleurs : Vert, Bleu, Rouge, Jaune, Blanc + picker custom
+- [x] Sélecteur épaisseur : 1%, 2%, 3%, 5%, 8%
+- [x] Undo/Redo avec état disabled si vide
+- [x] Reset View (zoom 1x)
+- [x] Clear Canvas (avec confirmation)
+- [x] Animation apparition spring (Framer Motion)
+- [x] Accessibilité : aria-label sur tous les boutons
+```
 
 ### ✅ Validation Phase 4
 

@@ -22,6 +22,7 @@ import {
 } from '../utils/coords-converter';
 import { useCanvasDrawing } from '../hooks/useCanvasDrawing';
 import { useCanvasGestures } from '../hooks/useCanvasGestures';
+import { CanvasToolbar } from './CanvasToolbar';
 import type Konva from 'konva';
 
 // ============================================================================
@@ -305,7 +306,7 @@ export function DrawingCanvas({
 
     // Hook de gestion des gestes (zoom/pan)
     const stageRef = useRef<Konva.Stage>(null);
-    const { transform, gestureProps, isGesturing } = useCanvasGestures({
+    const { transform, gestureProps, isGesturing, resetView } = useCanvasGestures({
         stageRef,
     });
 
@@ -424,6 +425,12 @@ export function DrawingCanvas({
                     )}
                 </Layer>
             </Stage>
+
+            {/* Toolbar flottante */}
+            <CanvasToolbar
+                onResetView={resetView}
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10"
+            />
         </div>
     );
 }
