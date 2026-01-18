@@ -319,24 +319,34 @@
 - [x] Types inférés exportés : Point, Line, LineTool, Circle, Shape, DrawingData
 ```
 
-### 4.2 - Zustand Store Canvas
+### 4.2 - Zustand Store Canvas ✅
 
-- [ ] Créer `src/features/canvas/store/canvasStore.ts`
-- [ ] État :
-  - `backgroundImage: { url, width, height } | null`
-  - `drawingData: DrawingDataSchema`
-  - `currentTool: 'brush' | 'circle' | 'eraser'`
-  - `currentColor: string`
-  - `history: DrawingDataSchema[]` (pour Undo/Redo)
-- [ ] Actions :
-  - `setBackgroundImage()`
-  - `addLine()`
-  - `addShape()`
-  - `removeLine(id)`
-  - `undo()` / `redo()`
-  - `clearCanvas()`
-- [ ] Middleware Persist → Sauvegarde dans `localStorage` (clé: `betagraph-canvas-${boulderId}`)
-- [ ] Middleware Zundo → Gestion de l'historique
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/store/canvasStore.ts)
+
+// Architecture : État UI séparé des Données métier
+// - UI (non persisté) : currentTool, currentColor, currentWidth, currentLine, isDrawing
+// - Données (persisté + undo) : drawingData
+
+// Middlewares configurés :
+- [x] temporal (zundo) : Historique undo/redo (limit: 50 états)
+- [x] persist : Sauvegarde localStorage (clé: 'betagraph-canvas-draft')
+- [x] partialize : Seul drawingData est suivi/persisté
+
+// Actions implémentées :
+- [x] setTool() / setColor() / setWidth()
+- [x] startLine() / updateCurrentLine() / finalizeLine() / cancelLine()
+- [x] addShape() : Ajoute cercle avec ID auto (nanoid)
+- [x] removeElement(id) : Suppression ciblée ligne ou forme
+- [x] clearCanvas() : Réinitialise le dessin
+- [x] resetStore() : Réinitialise tout le store
+- [x] loadDrawingData() : Charge données externes (Supabase)
+
+// Hooks exportés :
+- [x] useCanvasStore : Hook principal
+- [x] useCanvasHistory() : Accès undo/redo via zundo
+- [x] generateElementId() : Génération ID (nanoid)
+```
 
 ### 4.3 - Utilitaire de Calcul de Ratio (Responsive Canvas)
 
