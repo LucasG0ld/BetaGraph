@@ -301,13 +301,23 @@
 
 ## Phase 4 : Moteur Canvas (Maths & Coordonnées Relatives)
 
-### 4.1 - Schéma Zod pour Drawing Data
+### 4.1 - Schéma Zod pour Drawing Data ✅
 
-- [ ] Créer `src/lib/schemas/drawing.schema.ts`
-- [ ] Définir `PointSchema` : `{ x: number (0-100), y: number (0-100) }`
-- [ ] Définir `LineSchema` : `{ id, points: PointSchema[], color, width, tool: 'brush' }`
-- [ ] Définir `ShapeSchema` : `{ id, type: 'circle', center: PointSchema, radius, color }`
-- [ ] Définir `DrawingDataSchema` : `{ lines: LineSchema[], shapes: ShapeSchema[] }`
+```typescript
+// ✅ IMPLÉMENTÉ (src/lib/schemas/drawing.schema.ts)
+
+// Règle d'Or : Toutes les coordonnées en % (0-100), relatives à l'image
+// width & radius normalisés par rapport à la LARGEUR de l'image
+
+- [x] PointSchema : { x: 0-100, y: 0-100 }
+- [x] LineToolSchema : 'brush' | 'eraser'
+- [x] LineSchema : { id, tool, points, color (#RRGGBB), width (% largeur) }
+- [x] CircleSchema : { id, type: 'circle', center, radius (% largeur), color }
+- [x] ShapeSchema : Discriminated Union par 'type' (extensible)
+- [x] DrawingDataSchema : { version, lines, shapes }
+- [x] createEmptyDrawingData() : Factory function
+- [x] Types inférés exportés : Point, Line, LineTool, Circle, Shape, DrawingData
+```
 
 ### 4.2 - Zustand Store Canvas
 
