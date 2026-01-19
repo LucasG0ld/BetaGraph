@@ -218,10 +218,8 @@ export const CanvasToolbar = memo(function CanvasToolbar({
     const setWidth = useCanvasStore((s) => s.setWidth);
     const clearCanvas = useCanvasStore((s) => s.clearCanvas);
 
-    // Historique
-    const { undo, redo, pastStates, futureStates } = useCanvasHistory();
-    const canUndo = pastStates.length > 0;
-    const canRedo = futureStates.length > 0;
+    // Historique - utilise les booléens pré-calculés du hook
+    const { undo, redo, canUndo, canRedo } = useCanvasHistory();
 
     // Handlers
     const handleToolChange = useCallback((tool: CanvasTool) => {
@@ -229,18 +227,16 @@ export const CanvasToolbar = memo(function CanvasToolbar({
     }, [setTool]);
 
     const handleUndo = useCallback(() => {
-        if (canUndo) undo();
-    }, [canUndo, undo]);
+        undo();
+    }, [undo]);
 
     const handleRedo = useCallback(() => {
-        if (canRedo) redo();
-    }, [canRedo, redo]);
+        redo();
+    }, [redo]);
 
     const handleClear = useCallback(() => {
-        // Confirmation simple
-        if (confirm('Effacer tout le dessin ?')) {
-            clearCanvas();
-        }
+        // Effacer directement sans confirmation modale bloquante
+        clearCanvas();
     }, [clearCanvas]);
 
     return (

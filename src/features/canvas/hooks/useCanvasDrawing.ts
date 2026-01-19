@@ -107,6 +107,7 @@ export function useCanvasDrawing({
 
     /**
      * Convertit les coordonnées d'un événement Konva en coordonnées relatives.
+     * Prend en compte les transformations du Stage (zoom/pan).
      */
     const getRelativePoint = useCallback(
         (e: KonvaEventObject<PointerEvent>): Point | null => {
@@ -115,15 +116,21 @@ export function useCanvasDrawing({
             const stage = e.target.getStage();
             if (!stage) return null;
 
-            const pos = stage.getPointerPosition();
-            if (!pos) return null;
+            // Obtenir la position du pointeur dans le viewport
+            const pointerPos = stage.getPointerPosition();
+            if (!pointerPos) return null;
+
+            // Appliquer la transformation inverse pour obtenir les coordonnées réelles
+            // Cela corrige le décalage après zoom/pan
+            const transform = stage.getAbsoluteTransform().copy().invert();
+            const realPos = transform.point(pointerPos);
 
             // Vérifier si le point est dans l'image
-            if (!isPointInsideImage(pos.x, pos.y, layout)) {
+            if (!isPointInsideImage(realPos.x, realPos.y, layout)) {
                 return null;
             }
 
-            return stageToRelative(pos.x, pos.y, layout, imageWidth, imageHeight);
+            return stageToRelative(realPos.x, realPos.y, layout, imageWidth, imageHeight);
         },
         [layout, imageWidth, imageHeight]
     );

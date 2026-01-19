@@ -1,5 +1,4 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create, useStore } from 'zustand';
 import { temporal } from 'zundo';
 import { nanoid } from 'nanoid';
 
@@ -93,11 +92,10 @@ const DEFAULT_COLOR = '#FF3B30';
 /** Épaisseur par défaut (2% de la largeur image) */
 const DEFAULT_WIDTH = 2;
 
+
+
 /** Outil par défaut */
 const DEFAULT_TOOL: CanvasTool = 'brush';
-
-/** Clé localStorage pour la persistance */
-const STORAGE_KEY = 'betagraph-canvas-draft';
 
 // ============================================================================
 // ÉTAT INITIAL
@@ -141,182 +139,201 @@ const initialState: CanvasState = {
  * ```
  */
 export const useCanvasStore = create<CanvasStore>()(
-    persist(
-        temporal(
-            (set, get) => ({
-                ...initialState,
+    temporal(
+        (set, get) => ({
+            ...initialState,
 
-                // ============================================================
-                // ACTIONS UI
-                // ============================================================
+            // ============================================================
+            // ACTIONS UI
+            // ============================================================
 
-                setTool: (tool) => {
-                    set({ currentTool: tool });
-                },
+            setTool: (tool) => {
+                set({ currentTool: tool });
+            },
 
-                setColor: (color) => {
-                    set({ currentColor: color });
-                },
+            setColor: (color) => {
+                set({ currentColor: color });
+            },
 
-                setWidth: (width) => {
-                    set({ currentWidth: width });
-                },
+            setWidth: (width) => {
+                set({ currentWidth: width });
+            },
 
-                // ============================================================
-                // ACTIONS DESSIN (Ligne)
-                // ============================================================
+            // ============================================================
+            // ACTIONS DESSIN (Ligne)
+            // ============================================================
 
-                startLine: (point) => {
-                    set({
-                        currentLine: [point],
-                        isDrawing: true,
-                    });
-                },
+            startLine: (point) => {
+                set({
+                    currentLine: [point],
+                    isDrawing: true,
+                });
+            },
 
-                updateCurrentLine: (point) => {
-                    const { currentLine } = get();
-                    set({
-                        currentLine: [...currentLine, point],
-                    });
-                },
+            updateCurrentLine: (point) => {
+                const { currentLine } = get();
+                set({
+                    currentLine: [...currentLine, point],
+                });
+            },
 
-                finalizeLine: () => {
-                    const { currentLine, currentTool, currentColor, currentWidth, drawingData } =
-                        get();
+            finalizeLine: () => {
+                const { currentLine, currentTool, currentColor, currentWidth, drawingData } =
+                    get();
 
-                    // Ignorer si le tracé est trop court
-                    if (currentLine.length < 2) {
-                        set({ currentLine: [], isDrawing: false });
-                        return;
-                    }
-
-                    // Simplifier les points pour réduire la taille du stockage
-                    const simplifiedPoints = simplifyPath(currentLine, TOLERANCE_PERCENT);
-
-                    // Déterminer le type d'outil ligne
-                    const lineTool: LineTool = currentTool === 'eraser' ? 'eraser' : 'brush';
-
-                    // Créer la nouvelle ligne avec les points simplifiés
-                    const newLine: Line = {
-                        id: nanoid(),
-                        tool: lineTool,
-                        points: simplifiedPoints,
-                        color: currentColor,
-                        width: currentWidth,
-                    };
-
-                    // Ajouter aux données (cette mutation est suivie par zundo)
-                    set({
-                        drawingData: {
-                            ...drawingData,
-                            lines: [...drawingData.lines, newLine],
-                        },
-                        currentLine: [],
-                        isDrawing: false,
-                    });
-                },
-
-                cancelLine: () => {
+                // Ignorer si le tracé est trop court
+                if (currentLine.length < 2) {
                     set({ currentLine: [], isDrawing: false });
-                },
+                    return;
+                }
 
-                // ============================================================
-                // ACTIONS DESSIN (Forme)
-                // ============================================================
+                // Simplifier les points pour réduire la taille du stockage
+                const simplifiedPoints = simplifyPath(currentLine, TOLERANCE_PERCENT);
 
-                addShape: (shapeWithoutId) => {
-                    const { drawingData } = get();
+                // Déterminer le type d'outil ligne
+                const lineTool: LineTool = currentTool === 'eraser' ? 'eraser' : 'brush';
 
-                    const newShape: Shape = {
-                        ...shapeWithoutId,
-                        id: nanoid(),
-                    } as Shape;
+                // Créer la nouvelle ligne avec les points simplifiés
+                const newLine: Line = {
+                    id: nanoid(),
+                    tool: lineTool,
+                    points: simplifiedPoints,
+                    color: currentColor,
+                    width: currentWidth,
+                };
 
-                    set({
-                        drawingData: {
-                            ...drawingData,
-                            shapes: [...drawingData.shapes, newShape],
-                        },
-                    });
-                },
+                // Ajouter aux données (cette mutation est suivie par zundo)
+                set({
+                    drawingData: {
+                        ...drawingData,
+                        lines: [...drawingData.lines, newLine],
+                    },
+                    currentLine: [],
+                    isDrawing: false,
+                });
+            },
 
-                // ============================================================
-                // ACTIONS GLOBALES
-                // ============================================================
+            cancelLine: () => {
+                set({ currentLine: [], isDrawing: false });
+            },
 
-                removeElement: (id) => {
-                    const { drawingData } = get();
+            // ============================================================
+            // ACTIONS DESSIN (Forme)
+            // ============================================================
 
-                    set({
-                        drawingData: {
-                            ...drawingData,
-                            lines: drawingData.lines.filter((line) => line.id !== id),
-                            shapes: drawingData.shapes.filter((shape) => shape.id !== id),
-                        },
-                    });
-                },
+            addShape: (shapeWithoutId) => {
+                const { drawingData } = get();
 
-                clearCanvas: () => {
-                    set({
-                        drawingData: {
-                            version: DRAWING_DATA_SCHEMA_VERSION,
-                            lines: [],
-                            shapes: [],
-                        },
-                        currentLine: [],
-                        isDrawing: false,
-                    });
-                },
+                const newShape: Shape = {
+                    ...shapeWithoutId,
+                    id: nanoid(),
+                } as Shape;
 
-                resetStore: () => {
-                    set(initialState);
-                },
+                set({
+                    drawingData: {
+                        ...drawingData,
+                        shapes: [...drawingData.shapes, newShape],
+                    },
+                });
+            },
 
-                loadDrawingData: (data) => {
-                    set({
-                        drawingData: data,
-                        currentLine: [],
-                        isDrawing: false,
-                    });
-                },
-            }),
-            {
-                // Configuration zundo : ne suivre que drawingData pour l'historique
-                partialize: (state) => ({
-                    drawingData: state.drawingData,
-                }),
-                // Limite l'historique à 50 états pour éviter une consommation mémoire excessive
-                limit: 50,
-            }
-        ),
+            // ============================================================
+            // ACTIONS GLOBALES
+            // ============================================================
+
+            removeElement: (id) => {
+                const { drawingData } = get();
+
+                set({
+                    drawingData: {
+                        ...drawingData,
+                        lines: drawingData.lines.filter((line) => line.id !== id),
+                        shapes: drawingData.shapes.filter((shape) => shape.id !== id),
+                    },
+                });
+            },
+
+            clearCanvas: () => {
+                set({
+                    drawingData: {
+                        version: DRAWING_DATA_SCHEMA_VERSION,
+                        lines: [],
+                        shapes: [],
+                    },
+                    currentLine: [],
+                    isDrawing: false,
+                });
+            },
+
+            resetStore: () => {
+                set(initialState);
+            },
+
+            loadDrawingData: (data) => {
+                set({
+                    drawingData: data,
+                    currentLine: [],
+                    isDrawing: false,
+                });
+            },
+        }),
         {
-            // Configuration persist : ne sauvegarder que drawingData
-            name: STORAGE_KEY,
+            // Configuration zundo : ne suivre que drawingData pour l'historique
             partialize: (state) => ({
                 drawingData: state.drawingData,
             }),
+            // Fonction d'égalité pour éviter les doublons d'état (phantom pushes)
+            equality: (pastState, currentState) => {
+                // Comparaison simple des versions et longueurs pour performance
+                // Si on a besoin de plus de précision, on peut faire un deepEqual
+                const past = pastState?.drawingData;
+                const current = currentState?.drawingData;
+
+                if (!past || !current) return false;
+
+                return (
+                    past.lines.length === current.lines.length &&
+                    past.shapes.length === current.shapes.length &&
+                    // Vérifier les derniers IDs pour être sûr
+                    past.lines[past.lines.length - 1]?.id === current.lines[current.lines.length - 1]?.id &&
+                    past.shapes[past.shapes.length - 1]?.id === current.shapes[current.shapes.length - 1]?.id
+                );
+            },
+            // Limite l'historique à 50 états pour éviter une consommation mémoire excessive
+            limit: 50,
         }
     )
 );
+
 
 // ============================================================================
 // HOOKS DÉRIVÉS
 // ============================================================================
 
 /**
- * Hook pour accéder aux fonctions undo/redo.
+ * Hook pour accéder aux fonctions undo/redo de manière réactive.
+ *
+ * @description
+ * Utilise le store temporal de zundo comme un hook réactif.
+ * Le composant se re-rend quand l'historique change.
  *
  * @example
  * ```typescript
- * const { undo, redo, pastStates, futureStates } = useCanvasHistory();
+ * const { undo, redo, canUndo, canRedo } = useCanvasHistory();
  *
- * // Vérifier si undo est disponible
- * const canUndo = pastStates.length > 0;
- * const canRedo = futureStates.length > 0;
+ * // Les booléens canUndo/canRedo sont déjà calculés
+ * <button disabled={!canUndo} onClick={undo}>Undo</button>
  * ```
  */
 export function useCanvasHistory() {
-    return useCanvasStore.temporal.getState();
+    const { pastStates, futureStates, undo, redo } = useStore(useCanvasStore.temporal);
+
+    return {
+        undo,
+        redo,
+        canUndo: pastStates.length > 0,
+        canRedo: futureStates.length > 0,
+    };
 }
 
 /**

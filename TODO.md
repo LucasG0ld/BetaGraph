@@ -1,7 +1,7 @@
 # TODO - BetaGraph
 
 > **Statut :** Document de référence - Source de vérité pour le développement itératif  
-> **Dernière mise à jour :** 2026-01-16  
+> **Dernière mise à jour :** 2026-01-19  
 > **Conventions :** `[ ]` Non commencé | `[/]` En cours | `[x]` Terminé
 
 ---
@@ -473,13 +473,34 @@
 - [x] Accessibilité : aria-label sur tous les boutons
 ```
 
-### ✅ Validation Phase 4
+### 4.10 - Tests Unitaires ✅
 
-- [ ] Test : Dessiner sur mobile → Tracé fluide sans lag
-- [ ] Test : Redimensionner fenêtre → Tracé reste aligné avec l'image
-- [ ] Test : Zoom pinch → Canvas zoome sans perte de qualité
-- [ ] Test : Undo/Redo → Historique fonctionne
-- [ ] `npm run typecheck` → Aucune erreur
+```typescript
+// ✅ IMPLÉMENTÉ
+
+// Tests canvasStore (30 tests)
+- [x] canvasStore.test.ts : Actions UI (setTool, setColor, setWidth)
+- [x] canvasStore.test.ts : Dessin lignes (start, update, finalize, cancel)
+- [x] canvasStore.test.ts : Dessin formes (addShape avec ID unique)
+- [x] canvasStore.test.ts : Actions globales (remove, clear, reset, load)
+- [x] canvasStore.test.ts : Undo/Redo cycle complet via zundo
+
+// Tests simplify-path (21 tests)
+- [x] simplify-path.test.ts : Cas triviaux (0, 1, 2 points)
+- [x] simplify-path.test.ts : Simplification points alignés
+- [x] simplify-path.test.ts : Préservation des angles
+- [x] simplify-path.test.ts : Format Konva (flatPath)
+- [x] simplify-path.test.ts : Calcul ratio de réduction
+```
+
+### ✅ Validation Phase 4 - TERMINÉ
+
+- [x] Test : Dessiner sur mobile → Tracé fluide sans lag
+- [x] Test : Redimensionner fenêtre → Tracé reste aligné avec l'image
+- [x] Test : Zoom pinch → Canvas zoome sans perte de qualité
+- [x] Test : Undo/Redo → Historique fonctionne (fix equality function)
+- [x] Tests unitaires → 101 tests passent
+- [x] `npm run precommit` → Aucune erreur
 
 ---
 
