@@ -554,16 +554,36 @@
 - [x] Messages d'erreur traduits
 ```
 
-### 5.3 - Server Action : Sauvegarder le Canvas
+### 5.3 - Server Action : Sauvegarder le Canvas ✅
 
-- [ ] Créer `src/features/boulder/actions/saveBoulderCanvas.ts`
-- [ ] Input : `boulder_id`, `drawingData` (validé par `DrawingDataSchema`)
-- [ ] Logique de résolution de conflit :
-  - Récupérer `updated_at` depuis Supabase
-  - Comparer avec timestamp local (stocké dans Zustand)
-  - Si `local_ts < server_ts` → Proposer choix utilisateur
-  - Sinon → UPDATE avec nouveau `updated_at`
-- [ ] Retourner statut : `success | conflict`
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/boulder/actions/save-beta-drawing.ts)
+
+- [x] Server Action `saveBetaDrawing` créée
+- [x] Input : `betaId: string`, `drawingData: DrawingData`, `lastUpdatedAt: string`
+- [x] Validation session utilisateur
+- [x] Validation DrawingDataSchema (Zod)
+- [x] Logique de résolution de conflit (Optimistic Locking) :
+  - [x] Récupérer beta actuelle depuis Supabase
+  - [x] Vérifier ownership (user_id = authenticated user)
+  - [x] Comparer timestamps : `server_updated_at > client_lastUpdatedAt`
+  - [x] Si conflit → Retourner `{ success: false, conflict: true, serverData }`
+  - [x] Si pas de conflit → UPDATE drawing_data
+- [x] Retourner nouveau `updated_at` généré par trigger SQL
+- [x] Gestion d'erreurs en français :
+  - [x] Beta introuvable
+  - [x] Permission refusée (ownership)
+  - [x] Validation Zod échouée
+  - [x] Erreur réseau/timeout
+
+// Tests unitaires (25 tests)
+- [x] save-beta-drawing.test.ts : Validation UUID (8 tests)
+- [x] save-beta-drawing.test.ts : Validation DrawingData (3 tests)
+- [x] save-beta-drawing.test.ts : Logique timestamps (5 tests)
+- [x] save-beta-drawing.test.ts : Scénarios conflits réels (3 tests)
+- [x] save-beta-drawing.test.ts : Edge cases timestamps (3 tests)
+- [x] save-beta-drawing.test.ts : Type guards (3 tests)
+```
 
 ### 5.4 - Logique de Sauvegarde Automatique
 
