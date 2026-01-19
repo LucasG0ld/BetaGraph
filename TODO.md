@@ -689,11 +689,11 @@
 - [x] Lint : 0 warnings
 
 **Tests Navigateur** (Voir `docs/reports/phase-5/BROWSER-TESTS-CHECKLIST.md`)
-- [ ] Test : Créer boulder → Sauvegarde réussie
-- [ ] Test : Dessiner → Auto-save toutes les 5s
-- [ ] Test : Simuler conflit (éditer depuis 2 devices) → Modal s'affiche
-- [ ] Test : Mode hors ligne → Dessin continue + Synchro au retour réseau
-- [ ] Test : Résolution conflit → Garder local / Charger serveur
+- [x] Test : Créer boulder → Sauvegarde réussie
+- [x] Test : Dessiner → Auto-save toutes les 5s
+- [x] Test : Simuler conflit (éditer depuis 2 devices) → Modal s'affiche
+- [x] Test : Mode hors ligne → Dessin continue + Synchro au retour réseau
+- [x] Test : Résolution conflit → Garder local / Charger serveur
 
 ---
 
