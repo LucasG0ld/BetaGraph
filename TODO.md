@@ -585,13 +585,40 @@
 - [x] save-beta-drawing.test.ts : Type guards (3 tests)
 ```
 
-### 5.4 - Logique de Sauvegarde Automatique
+### 5.4 - Logique de Sauvegarde Automatique ✅
 
-- [ ] Créer `src/features/canvas/hooks/useAutoSave.ts`
-- [ ] Toutes les 5 secondes :
-  - Sauvegarder dans `localStorage` (via Zustand Persist)
-  - Si connecté + boulder_id existe → Appeler `saveBoulderCanvas`
-- [ ] Afficher indicateur visuel (Icône checkmark verte) lors de la réussite
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/canvas/hooks/useAutoSave.ts)
+
+- [x] Hook `useAutoSave(betaId: string | null)` créé
+- [x] Intervalle de 5 secondes pour auto-save
+- [x] Détection de modifications via hash (O(1) complexity) :
+  - [x] Hash = `v${version}-l${lines.length}-s${shapes.length}`
+  - [x] Comparaison avec dernier hash sauvegardé
+  - [x] Skip si aucune modification
+- [x] Appel `saveBetaDrawing` si betaId présent ET modifications
+- [x] Gestion timestamps (`lastUpdatedAt` stocké en ref)
+- [x] États retournés :
+  - [x] `saveStatus`: 'idle' | 'saving' | 'saved' | 'error' | 'conflict'
+  - [x] `errorMessage`: string | null
+  - [x] `forceSave()`: Force sauvegarde immédiate
+  - [x] `resetStatus()`: Réinitialise statut/erreur
+- [x] Warning `beforeunload` si sauvegarde en cours
+- [x] Retour automatique à 'idle' après 2s quand 'saved'
+
+// Composant SaveIndicator
+- [x] SaveIndicator.tsx créé (src/features/canvas/components/)
+- [x] Icônes SVG inline (spinner, check, error, alert)
+- [x] Animations fade-in (Tailwind)
+- [x] Support dark mode
+- [x] Position fixe (bottom-right)
+- [x] Accessible (role="status", aria-live="polite")
+
+// Tests unitaires (5 tests)
+- [x] useAutoSave.test.ts : Hash generation (3 tests)
+- [x] useAutoSave.test.ts : SaveStatus types (1 test)
+- [x] useAutoSave.test.ts : Error messages en français (1 test)
+```
 
 ### 5.5 - Logique de Récupération au Démarrage
 
