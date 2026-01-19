@@ -620,16 +620,36 @@
 - [x] useAutoSave.test.ts : Error messages en français (1 test)
 ```
 
-### 5.5 - Logique de Récupération au Démarrage
+### 5.5 - Logique de Récupération au Démarrage ✅
 
-- [ ] Créer `src/features/boulder/hooks/useLoadBoulder.ts`
-- [ ] Au montage du composant :
-  - Récupérer `boulder_id` depuis URL
-  - Charger depuis Supabase (`boulders` table)
-  - Si `localStorage` contient une version plus récente (`local_ts > server_ts`) :
-    - Afficher modal : "Version locale plus récente trouvée. Charger ?"
-  - Sinon → Charger depuis serveur
-- [ ] Initialiser le Zustand store avec les données
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/boulder/hooks/useLoadBeta.ts)
+
+- [x] Hook `useLoadBeta(betaId: string | null)` créé
+- [x] Mise à jour store canvasStore avec timestamps :
+  - [x] `lastModifiedLocally`: timestamp dernière modif locale
+  - [x] `lastSyncedWithServer`: timestamp dernier sync réussi
+  - [x] Auto-track dans finalizeLine(), addShape(), removeElement(), clearCanvas()
+- [x] Chargement beta depuis Supabase au montage
+- [x] Comparaison intelligente timestamps (4 stratégies) :
+  - [x] LOAD_SERVER : Pas de données locales
+  - [x] KEEP_LOCAL : Déjà sync avec serveur, pas de modif locale
+  - [x] KEEP_LOCAL_UNSAVED : Local modifié après sync
+  - [x] PROMPT_USER : Serveur plus récent ET jamais sync
+- [x] États retournés :
+  - [x] `isLoading`: boolean
+  - [x] `error`: string | null
+  - [x] `data`: BetaData | null
+  - [x] `hasLocalUnsavedChanges`: boolean
+  - [x] `serverData`: BetaData | null (pour résolution Phase 5.6)
+- [x] Clear historique undo/redo après chargement serveur
+- [x] `forceLoadServerData()` pour résolution manuelle
+
+// Tests unitaires (13 tests)
+- [x] useLoadBeta.test.ts : decideLoadStrategy (6 tests)
+- [x] useLoadBeta.test.ts : Timestamp comparison edge cases (3 tests)
+- [x] useLoadBeta.test.ts : Scénarios réels (4 tests)
+```
 
 ### 5.6 - UI de Résolution de Conflit
 

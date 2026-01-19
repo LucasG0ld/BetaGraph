@@ -41,6 +41,10 @@ export interface CanvasState {
     // État Données (persisté + suivi par undo)
     /** Données de dessin complètes */
     drawingData: DrawingData;
+    /** Timestamp de la dernière modification locale (ISO 8601) */
+    lastModifiedLocally: string | null;
+    /** Timestamp du dernier sync réussi avec le serveur (ISO 8601) */
+    lastSyncedWithServer: string | null;
 }
 
 /**
@@ -77,7 +81,7 @@ export interface CanvasActions {
     /** Réinitialise complètement le store */
     resetStore: () => void;
     /** Charge des données de dessin externes (ex: depuis Supabase) */
-    loadDrawingData: (data: DrawingData) => void;
+    loadDrawingData: (data: DrawingData, serverTimestamp?: string) => void;
 }
 
 export type CanvasStore = CanvasState & CanvasActions;
@@ -111,6 +115,8 @@ const initialState: CanvasState = {
 
     // Données
     drawingData: createEmptyDrawingData(),
+    lastModifiedLocally: null,
+    lastSyncedWithServer: null,
 };
 
 // ============================================================================
@@ -210,6 +216,7 @@ export const useCanvasStore = create<CanvasStore>()(
                     },
                     currentLine: [],
                     isDrawing: false,
+                    lastModifiedLocally: new Date().toISOString(),
                 });
             },
 
@@ -234,6 +241,7 @@ export const useCanvasStore = create<CanvasStore>()(
                         ...drawingData,
                         shapes: [...drawingData.shapes, newShape],
                     },
+                    lastModifiedLocally: new Date().toISOString(),
                 });
             },
 
@@ -250,6 +258,7 @@ export const useCanvasStore = create<CanvasStore>()(
                         lines: drawingData.lines.filter((line) => line.id !== id),
                         shapes: drawingData.shapes.filter((shape) => shape.id !== id),
                     },
+                    lastModifiedLocally: new Date().toISOString(),
                 });
             },
 
@@ -262,6 +271,7 @@ export const useCanvasStore = create<CanvasStore>()(
                     },
                     currentLine: [],
                     isDrawing: false,
+                    lastModifiedLocally: new Date().toISOString(),
                 });
             },
 
@@ -269,11 +279,13 @@ export const useCanvasStore = create<CanvasStore>()(
                 set(initialState);
             },
 
-            loadDrawingData: (data) => {
+            loadDrawingData: (data, serverTimestamp?: string) => {
                 set({
                     drawingData: data,
                     currentLine: [],
                     isDrawing: false,
+                    // Ne pas mettre à jour lastModifiedLocally (provient du serveur)
+                    lastSyncedWithServer: serverTimestamp ?? new Date().toISOString(),
                 });
             },
         }),
