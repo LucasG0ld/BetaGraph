@@ -651,14 +651,34 @@
 - [x] useLoadBeta.test.ts : Scénarios réels (4 tests)
 ```
 
-### 5.6 - UI de Résolution de Conflit
+### 5.6 - UI de Résolution de Conflit ✅
 
-- [ ] Créer `src/features/boulder/components/ConflictResolutionModal.tsx`
-- [ ] Afficher :
-  - Timestamp local vs serveur
-  - Aperçu visuel (miniature) des deux versions (si possible)
-  - Boutons : "Garder Local" | "Garder Serveur" | "Annuler"
-- [ ] Retourner le choix utilisateur à `saveBoulderCanvas`
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/boulder/components/ConflictResolutionModal.tsx)
+
+- [x] ConflictResolutionModal créé avec Framer Motion
+- [x] Layout two-column responsive :
+  - [x] Version Locale (gauche) : Bordure cyan, badge 💾
+  - [x] Version Serveur (droite) : Bordure gris, badge ☁️
+- [x] Statistiques affichées :
+  - [x] Timestamp relatif (formatTimestamp: "Il y a X min")
+  - [x] Nombre de lignes
+  - [x] Nombre de holds (shapes)
+- [x] Boutons d'action :
+  - [x] "✅ Garder ma version" (primary) → onResolve('local')
+  - [x] "☁️ Charger version Cloud" (secondary) → forceLoadServerData()
+- [x] Modal bloquante (pas d'annulation)
+- [x] Animations : fade-in overlay + scale-up modal (0.2s)
+- [x] Style High-Tech Lab (cyan, dark bg)
+- [x] Footer explicatif (action nécessaire pour continuer)
+
+// Composant Button mis à jour
+- [x] Ajout variante 'danger' pour évolutions futures
+
+// Exemple d'intégration
+- [x] CanvasEditorExample.tsx créé
+- [x] Flow complet: useLoadBeta → ConflictModal → useAutoSave
+```
 
 ### ✅ Validation Phase 5
 
