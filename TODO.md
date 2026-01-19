@@ -506,22 +506,53 @@
 
 ## Phase 5 : Persistance & Synchro Cloud
 
-### 5.1 - Schéma Zod pour Boulder Metadata
+### 5.1 - Schéma Zod pour Boulder Metadata ✅
 
-- [ ] Créer `src/features/boulder/schemas/boulder.schema.ts`
-- [ ] Définir `BoulderMetadataSchema` :
-  - `name: string`
-  - `location: string`
-  - `grade_value: string`
-  - `grade_system: 'fontainebleau' | 'v_scale'`
-  - `is_public: boolean`
+```typescript
+// ✅ IMPLÉMENTÉ (Option B: Atomic Creation)
 
-### 5.2 - Server Action : Créer un Boulder
+// Schemas créés :
+- [x] BoulderMetadataSchema (src/features/boulder/schemas/boulder.schema.ts)
+  - name: string (1-100 chars)
+  - location: string (optionnel, max 200 chars)
+  - image_url: string (HTTPS uniquement)
+  
+- [x] BetaCreationSchema (src/features/boulder/schemas/beta.schema.ts)
+  - boulder_id: UUID
+  - grade_value: string (validé selon système)
+  - grade_system: 'fontainebleau' | 'v_scale'
+  - drawing_data: DrawingData (optionnel)
+  - is_public: boolean (défaut: false)
 
-- [ ] Créer `src/features/boulder/actions/createBoulder.ts`
-- [ ] Valider input avec `BoulderMetadataSchema`
-- [ ] Insérer dans table `boulders` (sans drawing_data)
-- [ ] Retourner `boulder_id`
+- [x] CreateBoulderWithBetaSchema : Schéma combiné pour création atomique
+
+// Validation conditionnelle des grades :
+- [x] Fontainebleau : Regex (3, 4, 5, 5+, 6A-9C, avec +)
+- [x] V-Scale : Regex (VB, V0-V17)
+- [x] Refine : Validation croisée grade_value ↔ grade_system
+
+// Tests (93 assertions)
+- [x] boulder.schema.test.ts : 13 tests (nom, location, URL)
+- [x] beta.schema.test.ts : 48 tests (regex, validation conditionnelle)
+```
+
+### 5.2 - Server Action : Création Atomique Boulder + Beta ✅
+
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/boulder/actions/create-boulder.ts)
+
+- [x] createBoulderWithBeta : Server Action atomique
+- [x] Validation session (supabase.auth.getUser)
+- [x] Validation Zod (CreateBoulderWithBetaSchema)
+- [x] INSERT boulder (avec creator_id)
+- [x] INSERT beta initiale (avec drawing_data vide via createEmptyDrawingData)
+- [x] Gestion d'erreurs en français
+- [x] Retour : { boulder_id, beta_id } ou { error }
+
+// Sécurité :
+- [x] RLS enforcé (creator_id et user_id forcés côté serveur)
+- [x] Messages d'erreur traduits
+```
 
 ### 5.3 - Server Action : Sauvegarder le Canvas
 
