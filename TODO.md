@@ -682,11 +682,18 @@
 
 ### ✅ Validation Phase 5
 
+**Tests Automatiques** ✅
+- [x] Tests unitaires : 222/229 passés (7 skipped)
+- [x] `npm run build` : Réussi (0 erreurs)
+- [x] TypeScript : 0 erreurs
+- [x] Lint : 0 warnings
+
+**Tests Navigateur** (Voir `docs/reports/phase-5/BROWSER-TESTS-CHECKLIST.md`)
 - [ ] Test : Créer boulder → Sauvegarde réussie
 - [ ] Test : Dessiner → Auto-save toutes les 5s
 - [ ] Test : Simuler conflit (éditer depuis 2 devices) → Modal s'affiche
 - [ ] Test : Mode hors ligne → Dessin continue + Synchro au retour réseau
-- [ ] `npm run build` → Pas d'erreur
+- [ ] Test : Résolution conflit → Garder local / Charger serveur
 
 ---
 
