@@ -1,107 +1,80 @@
-# Rapport - Phase 6.1 : Tables de Correspondance
+# Rapport de Tâche - Phase 6.1 : Constantes de Cotation
 
 **Date** : 2026-01-20  
-**Statut** : ✅ TERMINÉE  
+**Statut** : ✅ Terminé  
+**Branche** : `main`  
 
 ---
 
-## 🎯 Objectif
+## ✅ Tâches Accomplies
 
-Créer les constantes de cotation avec une échelle normalisée (0-100) pour permettre le tri et la comparaison universels entre Fontainebleau et V-Scale.
+### 1. Constantes et Types
 
----
+#### [grades.ts](file:///f:/Portfolio/dev/BetaGraph/src/features/grading/constants/grades.ts)
 
-## 📦 Fichier Créé
-
-### `src/features/grading/constants/grades.ts` (180 lignes)
+Définition des échelles de cotation et de la table de correspondance normalisée.
 
 ---
 
-## 🏗️ Contenu Implémenté
+### 2. Structures de Données
 
-### 1. Listes Ordonnées
+| Constante | Description | Valeurs |
+|-----------|-------------|---------|
+| `FONTAINEBLEAU_GRADES` | Échelle Fontainebleau | 27 grades (`3` → `9C`) |
+| `V_SCALE_GRADES` | Échelle V-Scale | 19 grades (`VB` → `V17`) |
+| `GRADE_MAPPING` | Table de correspondance | Mapping avec valeur normalisée (0-100) |
 
-```typescript
-export const FONTAINEBLEAU_GRADES = [
-    '3', '4', '5', '5+',
-    '6A', '6A+', '6B', '6B+', '6C', '6C+',
-    '7A', '7A+', '7B', '7B+', '7C', '7C+',
-    '8A', '8A+', '8B', '8B+', '8C', '8C+',
-    '9A', '9A+', '9B', '9B+', '9C'
-] as const; // 27 grades
+---
 
-export const V_SCALE_GRADES = [
-    'VB', 'V0', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6',
-    'V7', 'V8', 'V9', 'V10', 'V11', 'V12', 'V13',
-    'V14', 'V15', 'V16', 'V17'
-] as const; // 19 grades
+### 3. Schémas de Validation (Zod)
+
+| Schéma | Rôle |
+|--------|------|
+| `GradeSystemSchema` | Valide `'fontainebleau' | 'v_scale'` |
+| `FontainebleauGradeSchema` | Valide un grade FB existant |
+| `VScaleGradeSchema` | Valide un grade V-Scale existant |
+
+---
+
+### 4. Normalisation (0-100)
+
+Exemples de valeurs normalisées pour le tri universel :
+
+| Grade | Norm. | Système |
+|-------|-------|---------|
+| **3** | 0 | FB |
+| **VB** | 3 | V-Scale |
+| **6A** | 20 | FB |
+| **V3** | 28 | V-Scale |
+| **9C** | 100 | FB |
+
+---
+
+## 📁 Arborescence
+
+```
+src/features/grading/constants/
+└── grades.ts     [NOUVEAU]
 ```
 
-### 2. Table de Mapping Normalisée
+---
 
-```typescript
-interface GradeMapping {
-    readonly normalized: number;         // 0-100
-    readonly vScale?: readonly VScaleGrade[];
-    readonly fontainebleau?: readonly FontainebleauGrade[];
-}
+## 🧪 Validation
 
-export const GRADE_MAPPING: Record<string, GradeMapping> = {
-    // Fontainebleau
-    '3':   { normalized: 0,  vScale: ['VB'] },
-    '6A+': { normalized: 25, vScale: ['V2', 'V3'] },  // Approximatif
-    '7A':  { normalized: 50, vScale: ['V6'] },        // Exact
-    '9C':  { normalized: 100, vScale: ['V17'] },
-    
-    // V-Scale
-    'VB':  { normalized: 3,  fontainebleau: ['3', '4'] },
-    'V6':  { normalized: 50, fontainebleau: ['7A'] },   // Exact
-    'V17': { normalized: 97, fontainebleau: ['9A+', '9B', '9B+', '9C'] },
-    // ...
-};
-```
-
-### 3. Schémas Zod
-
-```typescript
-export const GradeSystemSchema = z.enum(['fontainebleau', 'v_scale']);
-export const FontainebleauGradeSchema = z.enum(FONTAINEBLEAU_GRADES);
-export const VScaleGradeSchema = z.enum(V_SCALE_GRADES);
-```
-
-### 4. Utilitaires de Base
-
-| Fonction | Description |
-|----------|-------------|
-| `getNormalizedValue(grade)` | Retourne valeur 0-100, -1 si inconnu |
-| `isValidGrade(grade)` | Vérifie existence dans GRADE_MAPPING |
-| `detectGradeSystem(grade)` | Détecte FB ou V-Scale automatiquement |
+| Commande | Résultat |
+|----------|----------|
+| `npm run typecheck` | ✅ Passé |
+| `npm run lint` | ✅ Passé |
 
 ---
 
-## 📊 Correspondances Notables
+## 🔜 Prochaines Étapes
 
-| Fontainebleau | Normalized | V-Scale | Type |
-|---------------|------------|---------|------|
-| 3 | 0 | VB | Exact |
-| 6A+ | 25 | V2, V3 | **Approximatif** |
-| 6B | 30 | V3, V4 | **Approximatif** |
-| 7A | 50 | V6 | Exact |
-| 8A | 76 | V11 | Exact |
-| 9C | 100 | V17 | Exact |
+**Phase 6.2 - Utilitaires de Conversion** :
+- [x] Implémenter logique de conversion
+- [x] Gérer approximations (`6A+` ≈ `V3`)
+- [x] Tests unitaires
 
 ---
 
-## ✅ Validation
-
-- [x] TypeScript strict (pas de `any`)
-- [x] Exports nommés uniquement
-- [x] Schémas Zod intégrés
-
----
-
-## 📚 Sources
-
-- https://8a.nu/grading
-- https://www.moonboard.com/grade-conversion
-- https://en.wikipedia.org/wiki/Grade_(bouldering)
+**Statut global** : ✅ **PHASE 6.1 VALIDÉE**
