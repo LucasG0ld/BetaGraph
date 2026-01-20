@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { DrawingCanvas } from '@/features/canvas/components/DrawingCanvas';
 import { useLoadBeta } from '@/features/boulder/hooks/useLoadBeta';

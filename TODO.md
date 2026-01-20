@@ -699,19 +699,37 @@
 
 ## Phase 6 : Système de Cotation (Fontainebleau ↔ V-Scale)
 
-### 6.1 - Tables de Correspondance
+### 6.1 - Tables de Correspondance ✅
 
-- [ ] Créer `src/constants/gradingTables.ts`
-- [ ] Définir `fontainebleauGrades: string[]` (3, 4, 5, 5+, 6A, 6A+, ..., 9A)
-- [ ] Définir `vScaleGrades: string[]` (VB, V0, V1, ..., V17)
-- [ ] Définir `conversionMap: Record<string, string>` (approximations)
-  - Exemple : `{ '6A': 'V3', '6A+': 'V3', '6B': 'V4', ... }`
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/grading/constants/grades.ts)
 
-### 6.2 - Utilitaire de Conversion
+- [x] `FONTAINEBLEAU_GRADES` : 27 grades (3 → 9C) as const
+- [x] `V_SCALE_GRADES` : 19 grades (VB → V17) as const
+- [x] `GRADE_MAPPING` : Table normalisée (0-100) avec correspondances bidirectionnelles
+- [x] Schémas Zod : GradeSystemSchema, FontainebleauGradeSchema, VScaleGradeSchema
+- [x] Utilitaires : getNormalizedValue(), isValidGrade(), detectGradeSystem()
+```
 
-- [ ] Créer `src/features/grading/utils/convertGrade.ts`
-- [ ] `convertGrade(grade, fromSystem, toSystem)` → `{ converted: string, isApproximate: boolean }`
-- [ ] Si conversion non bijective → Retourner `isApproximate: true`
+### 6.2 - Utilitaires de Conversion ✅
+
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/grading/utils/grade-converter.ts)
+
+- [x] `convertGrade(value, from, to)` → `{ value, isApproximate }`
+- [x] `compareGrades(g1, g2, system?)` → `-1 | 0 | 1` (tri universel)
+- [x] `createGradeComparator(ascending)` → Factory pour Array.sort()
+- [x] `getGradeValues(system)` → Liste grades pour dropdown
+- [x] `getAllConversions(value, from, to)` → Toutes correspondances
+- [x] `normalizeGradeCase(grade, system)` → "6a+" → "6A+"
+- [x] `findClosestGrade(normalized, system)` → Grade le plus proche
+
+// Tests unitaires : 99 tests (couverture 100% des grades)
+- [x] Conversions bijectives (7A ↔ V6)
+- [x] Conversions approximatives (6A+ → V2, isApproximate: true)
+- [x] Tri mixte (FB + V-Scale dans le même tableau)
+- [x] Résilience casse, grades inconnus
+```
 
 ### 6.3 - Composant Affichage de Cotation
 
@@ -734,11 +752,11 @@
 - [ ] Toggle pour changer `preferred_grading_system`
 - [ ] Sauvegarder dans table `profiles` (UPDATE)
 
-### ✅ Validation Phase 6
+### ✅ Validation Phase 6.1 & 6.2
 
-- [ ] Test : Afficher "6A" en mode V-Scale → Affiche "~V3 equivalent"
-- [ ] Test : Changer de préférence → Toutes les cotations se convertissent
-- [ ] `npm run typecheck` → Aucune erreur
+- [x] `npm run typecheck` → Aucune erreur
+- [x] `npm run lint` → Aucune erreur
+- [x] `npm run test -- src/features/grading` → 99/99 tests passés
 
 ---
 

@@ -26,7 +26,7 @@ function SimulateConflictContent() {
                 setStatus('error');
                 setMessage(`Erreur: ${result.error}`);
             }
-        } catch (err) {
+        } catch {
             setStatus('error');
             setMessage('Erreur inattendue');
         }
@@ -69,7 +69,7 @@ function SimulateConflictContent() {
                     <h3 className="font-bold mb-2">Instructions de Test :</h3>
                     <ol className="list-decimal pl-4 space-y-2">
                         <li>Ouvrez une Beta dans le Canvas (nouvel onglet)</li>
-                        <li>Copiez l'ID de la Beta ici</li>
+                        <li>Copiez l&apos;ID de la Beta ici</li>
                         <li>Faites une modification LOCALE dans le Canvas (dessinez quelque chose)</li>
                         <li>Cliquez sur le bouton ci-dessus pour simuler une modif concurrente</li>
                         <li>Retournez sur le Canvas et <strong>Rafraîchissez la page</strong></li>
