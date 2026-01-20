@@ -731,32 +731,43 @@
 - [x] Résilience casse, grades inconnus
 ```
 
-### 6.3 - Composant Affichage de Cotation
+### 6.3 - Composant Affichage de Cotation ✅
 
-- [ ] Créer `src/features/grading/components/GradeDisplay.tsx`
-- [ ] Props : `originalGrade`, `originalSystem`, `userPreferredSystem`
-- [ ] Afficher :
-  - Si système identique → Afficher directement
-  - Sinon → Afficher converti avec mention "(~V4 equivalent)"
+```tsx
+// ✅ IMPLÉMENTÉ (src/features/grading/components/GradeDisplay.tsx)
 
-### 6.4 - Composant Sélecteur de Cotation
+- [x] Props : `value`, `system`, `forceOriginal`
+- [x] Affichage intelligent : Convertit si le `system` != `preferredSystem`
+- [x] Indicateur d'approximation : Affiche `~` uniquement si conversion non bijective
+- [x] Style : `font-mono`, badge optionnel
+```
 
-- [ ] Créer `src/features/grading/components/GradeSelector.tsx`
-- [ ] Dropdown avec liste des cotations du système actif
-- [ ] Toggle pour changer de système (Fontainebleau ↔ V-Scale)
-- [ ] Retourner `{ grade_value, grade_system }`
+### 6.4 - Composant Sélecteur de Cotation ✅
 
-### 6.5 - Settings Utilisateur (Préférence de Cotation)
+```tsx
+// ✅ IMPLÉMENTÉ (src/features/grading/components/GradeSelector.tsx)
 
-- [ ] Créer page `app/(app)/settings/page.tsx`
-- [ ] Toggle pour changer `preferred_grading_system`
-- [ ] Sauvegarder dans table `profiles` (UPDATE)
+- [x] `GradeSystemToggle.tsx` : Animation Framer Motion
+- [x] `GradeSelector` : Grille 4 colonnes scrollable
+- [x] UX Mobile : Touch target > 44px
+- [x] Compatible `react-hook-form`
+```
 
-### ✅ Validation Phase 6.1 & 6.2
+### 6.5 - Settings Utilisateur (Préférence de Cotation) ✅
+
+```typescript
+// ✅ IMPLÉMENTÉ (src/features/grading/store/ + actions/)
+
+- [x] `useGradingStore` : Persistance locale (Zustand persist) + Hydration
+- [x] `updateUserPreference` : Server Action (UPDATE table profiles)
+- [x] `useGradingPreferenceSync` : Hook de synchro optimiste avec debounce
+```
+
+### ✅ Validation Phase 6.3-6.5
 
 - [x] `npm run typecheck` → Aucune erreur
 - [x] `npm run lint` → Aucune erreur
-- [x] `npm run test -- src/features/grading` → 99/99 tests passés
+- [x] Tests manuels des composants UI
 
 ---
 

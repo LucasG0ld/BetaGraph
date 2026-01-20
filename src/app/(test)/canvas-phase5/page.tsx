@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { DrawingCanvas } from '@/features/canvas/components/DrawingCanvas';
 import { useLoadBeta } from '@/features/boulder/hooks/useLoadBeta';
@@ -9,11 +9,9 @@ import { SaveIndicator } from '@/features/canvas/components/SaveIndicator';
 import { ConflictResolutionModal } from '@/features/boulder/components/ConflictResolutionModal';
 
 /**
- * Page de test - Canvas Phase 5 Complet
- * 
- * Test Phase 5.3-5.6 : Auto-save, Load, Résolution Conflits
+ * Contenu de la page (Client Component avec useSearchParams)
  */
-export default function CanvasPhase5TestPage() {
+function CanvasPhase5Content() {
     const searchParams = useSearchParams();
     const betaId = searchParams.get('betaId');
 
@@ -176,5 +174,20 @@ export default function CanvasPhase5TestPage() {
                 </div>
             </footer>
         </div>
+    );
+}
+
+/**
+ * Page de Test Phase 5 avec Suspense Boundary
+ */
+export default function CanvasPhase5TestPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex h-screen items-center justify-center bg-brand-gray-900 text-white">
+                Chargement...
+            </div>
+        }>
+            <CanvasPhase5Content />
+        </Suspense>
     );
 }
