@@ -32,6 +32,12 @@ export interface BetaData {
     is_public: boolean;
     created_at: string;
     updated_at: string;
+    boulder?: {
+        name: string;
+        location: string;
+        image_url: string;
+        // Add dimensions if they exist, otherwise we'll handle missing dims
+    };
 }
 
 /**
@@ -107,7 +113,7 @@ export function useLoadBeta(betaId: string | null): LoadBetaResult {
                 // 1. Fetch beta depuis Supabase
                 const { data: fetchedBeta, error: fetchError } = await supabaseBrowser
                     .from('betas')
-                    .select('*')
+                    .select('*, boulder:boulders(*)')
                     .eq('id', betaId)
                     .single();
 

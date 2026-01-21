@@ -8,7 +8,7 @@ import React from 'react';
  * LoadingScreen "Cyberpunk" Style
  * Uses SVG stroke animation for a tech feel.
  */
-export function LoadingScreen({ className }: { className?: string }) {
+export function LoadingScreen({ className, message }: { className?: string; message?: string }) {
     return (
         <div className={cn("flex flex-col items-center justify-center p-8", className)}>
             <div className="relative w-16 h-16">
@@ -34,7 +34,7 @@ export function LoadingScreen({ className }: { className?: string }) {
                 />
             </div>
             <div className="mt-4 text-xs font-mono text-brand-accent-cyan tracking-widest animate-pulse">
-                INITIALIZING...
+                {message || 'INITIALIZING...'}
             </div>
         </div>
     );
