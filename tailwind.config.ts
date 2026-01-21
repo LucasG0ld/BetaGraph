@@ -29,9 +29,15 @@ const config: Config = {
           accent: {
             cyan: "#00F0FF",
             neon: "#ADFF2F",
+            pink: "#FF0055", // Error color
             primary: "#00F0FF",
           },
         },
+      },
+      boxShadow: {
+        'glow-cyan': '0 0 20px -5px rgba(0, 240, 255, 0.5)',
+        'glow-neon': '0 0 20px -5px rgba(173, 255, 47, 0.5)',
+        'glow-pink': '0 0 20px -5px rgba(255, 0, 85, 0.5)',
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"],
