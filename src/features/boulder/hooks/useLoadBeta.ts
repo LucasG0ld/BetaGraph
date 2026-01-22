@@ -115,7 +115,7 @@ export function useLoadBeta(betaId: string | null): LoadBetaResult {
                     .from('betas')
                     .select('*, boulder:boulders(*)')
                     .eq('id', betaId)
-                    .single();
+                    .maybeSingle();
 
                 if (fetchError) {
                     setError(`Erreur de chargement: ${fetchError.message}`);

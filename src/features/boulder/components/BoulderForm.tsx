@@ -71,13 +71,13 @@ export function BoulderForm() {
                 addToast('Bloc créé avec succès !', 'success');
                 // Redirection vers l'éditeur avec la beta ID
                 router.push(
-                    `/boulder/${result.data.boulder_id}/edit?beta=${result.data.beta_id}`
+                    `/boulder/${result.data.boulder_id}/edit?betaId=${result.data.beta_id}`
                 );
             } else {
                 addToast(result.error, 'error');
                 setIsSubmitting(false);
             }
-        } catch (error) {
+        } catch {
             addToast("Une erreur inattendue s'est produite.", 'error');
             setIsSubmitting(false);
         }

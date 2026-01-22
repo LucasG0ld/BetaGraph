@@ -773,119 +773,74 @@
 
 ## Phase 7 : UI "High-Tech Lab" & Design System
 
-### 7.1 - Tokens Tailwind (Design System)
+### 7.1 - Tokens Tailwind & Configuration Global ✅
+- [x] Configurer `tailwind.config.ts` : Colors (Neon/Glass), Animations, Google Fonts (Inter/JetBrains)
+- [x] Provider `next-themes` (Dark Mode default)
+- [x] Typographie & Utilitaires `cn()`
 
-- [ ] Configurer `tailwind.config.ts` :
-  - Colors : `primary`, `secondary`, `accent`, `background`, `surface`
-  - Dark Mode : Classe `.dark` avec palette sombre par défaut
-  - Typographie : Ajouter Google Fonts (ex: Inter, JetBrains Mono)
-  - Animations custom : `animate-slide-in`, `animate-fade-in`
+### 7.2 - Composants Atomiques (Design System) ✅
+- [x] `Card.tsx` : Conteneur avec variants `glass`, `neon`, `default`
+- [x] `Badge.tsx` : Variants status (success, warning, error, neon)
+- [x] `LoadingScreen.tsx` : Animation SVG Cyberpunk
+- [x] `Button.tsx` / `Input.tsx` : Shadcn stylisé High-Tech
+- [x] `useToastStore` + `Toast.tsx` : Système de notification animé
 
-### 7.2 - Composants UI de Base (Shadcn/UI)
+### 7.3 - Integration Global UI ✅
+- [x] `Navbar` : Navigation responsive Desktop
+- [x] `MobileNav` : Tab bar bottom pour mobile
+- [x] `SectionHeader` : Titres unifiés avec sous-titres
+- [x] Layout Global (`src/app/(app)/layout.tsx`)
 
-- [ ] Installer : Button, Input, Select, Modal, Toast
-- [ ] Personnaliser les variants pour match l'identité "High-Tech Lab"
-- [ ] Ajouter `src/components/ui/Icon.tsx` (wrapper Lucide Icons)
+### 7.4 - Dashboard (Page Accueil) ✅
+- [x] Serveur Action : Fetch user betas + déduplication
+- [x] `BoulderCard.tsx` : Image, Grade, Date, Animation entry
+- [x] `EmptyDashboard.tsx` : Call-to-action si vide
+- [x] Grid responsive & Chargement optimisé
 
-### 7.3 - Composants Vendor (Copy-Paste)
+### 7.5 - Formulaire de Création ✅
+- [x] `ImageDropzone.tsx` : Upload Drag & Drop avec feedback
+- [x] `BoulderForm.tsx` : Progressive Disclosure (Image -> Meta)
+- [x] Validation Zod stricte (CreateBoulderWithBetaSchema)
+- [x] Redirection vers Éditeur après succès
 
-- [ ] Créer `src/components/vendor/eldora-ui/`
-- [ ] (Identifier les composants spécifiques à intégrer selon tes besoins)
-- [ ] Ajouter commentaires d'attribution en en-tête
-- [ ] Créer wrappers dans `src/components/ui/*` pour respecter le Design System
+### 7.6 - Assemblage de l'Éditeur (Master Page) ✅
+- [x] Layout "Full Screen" isolé (`fixed inset-0`, `touch-none`)
+- [x] `EditorView.tsx` : Orchestration UI
+- [x] Intégration Hooks : `useLoadBeta` + `useAutoSave`
+- [x] Gestion Conflits : `ConflictResolutionModal`
+- [x] Composants : `DrawingCanvas`, `CanvasToolbar`, `SaveIndicator`
 
-### 7.4 - Layout Principal
+### ✅ Validation Phase 7 - TERMINÉ
 
-- [ ] Créer `app/(app)/layout.tsx` :
-  - Header avec logo + navigation
-  - Footer minimal
-  - Gestion du Dark Mode (Provider)
-- [ ] Créer `app/(auth)/layout.tsx` (Centré, minimal)
-
-### 7.5 - Page d'Accueil / Dashboard
-
-- [ ] Créer `app/(app)/page.tsx`
-- [ ] Afficher la liste des boulders de l'utilisateur (Grid)
-- [ ] Bouton CTA : "+ Créer une Bêta"
-- [ ] Filtres : Par cotation, par date
-
-### 7.6 - Page Création de Boulder
-
-- [ ] Créer `app/(app)/boulder/new/page.tsx`
-- [ ] Flow :
-  - Étape 1 : Upload image (Galerie ou Caméra)
-  - Étape 2 : Saisie métadonnées (Nom, Lieu, Cotation)
-  - Étape 3 : Redirection vers `/boulder/[id]/edit`
-
-### 7.7 - Page Éditeur de Canvas
-
-- [ ] Créer `app/(app)/boulder/[id]/edit/page.tsx`
-- [ ] Charger le boulder depuis `useLoadBoulder`
-- [ ] Afficher `<DrawingCanvas />` + `<Toolbar />`
-- [ ] Mode Plein Écran (toggle via bouton)
-- [ ] Bouton "Publier" → Passe `is_public` à `true`
-
-### 7.8 - Page Visionneuse Publique
-
-- [ ] Créer `app/(public)/boulder/[id]/page.tsx`
-- [ ] Afficher l'image + dessin (lecture seule)
-- [ ] Afficher métadonnées (Nom, Cotation, Auteur)
-- [ ] Bouton "Partager" (Copy Link)
-- [ ] Générer meta tags OpenGraph dynamiques
-
-### 7.9 - Animations (Framer Motion)
-
-- [ ] Toolbar rétractable avec transition `spring`
-- [ ] Modal de conflit avec `fadeIn`
-- [ ] Liste des boulders avec `stagger`
-
-### ✅ Validation Phase 7
-
-- [ ] Test : Navigation fluide entre les pages
-- [ ] Test : Dark Mode fonctionne sur tous les composants
-- [ ] Test : UI responsive (Mobile, Tablet, Desktop)
-- [ ] Accessibility : Focus clavier, aria-labels
-- [ ] `npm run lint` → Pas d'erreur
+- [x] `npm run precommit` → 0 erreurs typage/lint
+- [x] Cohérence visuelle (Dark Mode, Glows)
+- [x] Expérience Mobile (Touch targets, no-scroll canvas)
+- [x] Flow complet : Login -> Dashboard -> Création -> Édition -> Sauvegarde
 
 ---
 
-## Phase 8 : Partage & OpenGraph
+## Phase 8 : Partage & OpenGraph (Visionneuse Publique)
 
-### 8.1 - Génération de Thumbnail (Canvas Snapshot)
+### 8.1 - Page Visionneuse Publique (Ex-7.8)
+- [ ] Créer `app/(public)/boulder/[id]/page.tsx`
+- [ ] Layout spécifique (sans sidebar/edit controls)
+- [ ] Affichage lecture seule du Canvas
 
+### 8.2 - Génération de Thumbnail (Canvas Snapshot)
 - [ ] Créer `src/features/share/utils/generateThumbnail.ts`
-- [ ] Utiliser `.toDataURL()` de Konva pour capturer le canvas
-- [ ] Convertir en Blob
-- [ ] Upload vers bucket `thumbnails` (public)
+- [ ] Upload vers bucket `thumbnails`
 
-### 8.2 - Server Action : Publier un Boulder
+### 8.3 - Server Action : Publier un Boulder
+- [ ] Action `publishBoulder` (is_public = true)
 
-- [ ] Créer `src/features/boulder/actions/publishBoulder.ts`
-- [ ] Générer le thumbnail
-- [ ] UPDATE `boulders` : `is_public = true` + `thumbnail_url`
+### 8.4 - Meta Tags OpenGraph Dynamiques
+- [ ] `generateMetadata()` avec image thumbnail
 
-### 8.3 - Meta Tags OpenGraph Dynamiques
-
-- [ ] Dans `app/(public)/boulder/[id]/page.tsx` :
-- [ ] Utiliser `generateMetadata()` de Next.js
-- [ ] Fetch boulder depuis Supabase
-- [ ] Retourner :
-  - `og:title` : Nom du boulder
-  - `og:description` : Cotation + Lieu
-  - `og:image` : URL du thumbnail
-
-### 8.4 - Composant Partage
-
-- [ ] Créer `src/features/share/components/ShareButton.tsx`
-- [ ] Copier lien dans le presse-papier
-- [ ] Toast de confirmation
-- [ ] (Optionnel) Intégration Web Share API pour partage natif
+### 8.5 - Composant Partage
+- [ ] `ShareButton.tsx` (Copy Link / Native Share)
 
 ### ✅ Validation Phase 8
-
-- [ ] Test : Publier boulder → Thumbnail généré
-- [ ] Test : Partager lien sur WhatsApp → Preview s'affiche correctement
-- [ ] Test : Meta tags valides (via Open Graph Debugger)
+- [ ] Test publication et partage
 
 ---
 

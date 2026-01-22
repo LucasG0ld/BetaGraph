@@ -27,7 +27,7 @@ export function BoulderCard({ beta, index = 0 }: BoulderCardProps) {
     if (!boulder) return null;
 
     return (
-        <Link href={`/beta/${beta.id}`}>
+        <Link href={`/boulder/${boulder.id}/edit?betaId=${beta.id}`}>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

@@ -14,11 +14,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 interface EditorViewProps {
-    boulderId: string;
     betaId: string;
 }
 
-export function EditorView({ boulderId, betaId }: EditorViewProps) {
+export function EditorView({ betaId }: Omit<EditorViewProps, 'boulderId'>) {
     const router = useRouter();
 
     // 1. Hooks d'orchestration
@@ -27,13 +26,11 @@ export function EditorView({ boulderId, betaId }: EditorViewProps) {
         error: loadError,
         data: betaData,
         serverData,
-        hasLocalUnsavedChanges,
     } = useLoadBeta(betaId);
 
     const {
         saveStatus,
         errorMessage: saveError,
-        forceSave,
     } = useAutoSave(betaId);
 
     // 2. Gestion des conflits (Fusion des sources)
@@ -118,6 +115,7 @@ export function EditorView({ boulderId, betaId }: EditorViewProps) {
                         imageUrl={betaData.boulder.image_url}
                         imageWidth={imageDims.width}
                         imageHeight={imageDims.height}
+                        className="w-full h-full"
                     />
                 )}
             </div>

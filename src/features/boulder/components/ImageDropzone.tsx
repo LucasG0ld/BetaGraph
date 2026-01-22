@@ -91,7 +91,7 @@ export function ImageDropzone({
                                 className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-lg text-white font-medium hover:bg-white/20 transition-colors border border-white/20 flex items-center gap-2"
                             >
                                 <ImageIcon className="w-4 h-4" />
-                                Changer l'image
+                                Changer l&apos;image
                             </button>
                         </div>
                     </motion.div>

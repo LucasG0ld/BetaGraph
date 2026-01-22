@@ -12,7 +12,7 @@ export default function EditorPage() {
 
     const [isReady, setIsReady] = useState(false);
     const boulderId = params.id as string;
-    const betaId = searchParams.get('beta');
+    const betaId = searchParams.get('betaId');
 
     useEffect(() => {
         if (boulderId && betaId) {
@@ -24,5 +24,5 @@ export default function EditorPage() {
         return <LoadingScreen message="Initialisation de l'éditeur..." />;
     }
 
-    return <EditorView boulderId={boulderId} betaId={betaId} />;
+    return <EditorView betaId={betaId} />;
 }
