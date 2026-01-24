@@ -827,11 +827,11 @@
 - [ ] Affichage lecture seule du Canvas
 
 ### 8.2 - Génération de Thumbnail (Canvas Snapshot)
-- [ ] Créer `src/features/share/utils/generateThumbnail.ts`
-- [ ] Upload vers bucket `thumbnails`
+- [x] Créer `src/features/share/utils/generateThumbnail.ts`
+- [x] Upload vers bucket `thumbnails`
 
 ### 8.3 - Server Action : Publier un Boulder
-- [ ] Action `publishBoulder` (is_public = true)
+- [x] Action `publishBoulder` (is_public = true)
 
 ### 8.4 - Meta Tags OpenGraph Dynamiques
 - [ ] `generateMetadata()` avec image thumbnail

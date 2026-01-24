@@ -11,7 +11,14 @@ import { useAutoSave } from '@/features/canvas/hooks/useAutoSave';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { generateBetaThumbnail } from '@/features/share/utils/generate-thumbnail';
+import { publishBeta } from '@/features/boulder/actions/publish-beta';
+import { EditorToolbar } from './EditorToolbar';
+import { useToastStore } from '@/features/shared/store/useToastStore';
+import type Konva from 'konva';
+
+// ... imports ...
 
 interface EditorViewProps {
     betaId: string;
@@ -19,6 +26,10 @@ interface EditorViewProps {
 
 export function EditorView({ betaId }: Omit<EditorViewProps, 'boulderId'>) {
     const router = useRouter();
+    const addToast = useToastStore((s) => s.addToast);
+
+    // Canvas Ref for Thumbnail Generation
+    const stageRef = useRef<Konva.Stage>(null);
 
     // 1. Hooks d'orchestration
     const {
@@ -35,6 +46,7 @@ export function EditorView({ betaId }: Omit<EditorViewProps, 'boulderId'>) {
 
     // 2. Gestion des conflits (Fusion des sources)
     const [showConflictModal, setShowConflictModal] = useState(false);
+    const [isPublishing, setIsPublishing] = useState(false);
 
     useEffect(() => {
         // Conflit au chargement (useLoadBeta) OU à la sauvegarde (useAutoSave)
@@ -42,6 +54,36 @@ export function EditorView({ betaId }: Omit<EditorViewProps, 'boulderId'>) {
             setShowConflictModal(true);
         }
     }, [serverData, saveStatus]);
+
+    // --- PUBLISH ACTION ---
+    const handlePublish = async () => {
+        if (!stageRef.current || !betaData?.boulder || !imageDims) return;
+
+        try {
+            setIsPublishing(true);
+
+            // 1. Capture & Upload
+            const thumbnailUrl = await generateBetaThumbnail(
+                stageRef.current,
+                betaId,
+                imageDims
+            );
+
+            // 2. Server Action
+            const result = await publishBeta(betaId, thumbnailUrl);
+
+            if (result.error) {
+                addToast(result.error || 'Erreur de publication', 'error');
+            } else {
+                addToast('Votre beta est maintenant visible publiquement.', 'success');
+            }
+        } catch (error) {
+            console.error('Publish error:', error);
+            addToast('Impossible de générer la miniature ou de publier.', 'error');
+        } finally {
+            setIsPublishing(false);
+        }
+    };
 
     // --- IMAGE LOADING & DIMENSIONS ---
     const [imageDims, setImageDims] = useState<{ width: number; height: number } | null>(null);
@@ -81,37 +123,20 @@ export function EditorView({ betaId }: Omit<EditorViewProps, 'boulderId'>) {
 
     return (
         <div className="fixed inset-0 z-50 flex h-full w-full flex-col overflow-hidden bg-brand-black touch-none">
-            {/* --- HEADER OVERLAY (Top) --- */}
-            <div className="absolute top-0 left-0 right-0 z-20 flex items-start justify-between p-4 pointer-events-none">
-                {/* Back Button */}
-                <Link href="/dashboard" className="pointer-events-auto">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="bg-brand-black/50 backdrop-blur-md border border-brand-gray-700/50 hover:border-brand-accent-cyan/50 text-white rounded-full pr-4 pl-3"
-                    >
-                        <ChevronLeft className="h-5 w-5 mr-1" />
-                        <span className="text-sm font-medium hidden sm:inline">
-                            Retour
-                        </span>
-                    </Button>
-                </Link>
-
-                {/* Save Indicator */}
-                <div className="pointer-events-auto">
-                    <SaveIndicator status={saveStatus} />
-                    {saveError && (
-                        <p className="text-xs text-red-400 mt-1 text-right bg-black/50 px-2 py-1 rounded">
-                            {saveError}
-                        </p>
-                    )}
-                </div>
-            </div>
+            {/* --- HEADER TOOLBAR --- */}
+            <EditorToolbar
+                saveStatus={saveStatus}
+                saveError={saveError}
+                isPublishing={isPublishing}
+                onPublish={handlePublish}
+            // isPublic={betaData.is_public} // Si on avait acces a is_public dans betaData
+            />
 
             {/* --- DRAWING CANVAS (Middle / Full) --- */}
             <div className="relative flex-1 bg-brand-gray-900">
                 {imageDims && (
                     <DrawingCanvas
+                        ref={stageRef}
                         imageUrl={betaData.boulder.image_url}
                         imageWidth={imageDims.width}
                         imageHeight={imageDims.height}

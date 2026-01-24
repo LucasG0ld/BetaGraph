@@ -10,7 +10,7 @@
  * @module DrawingCanvas
  */
 
-import { useEffect, useRef, useState, useMemo, memo } from 'react';
+import { useEffect, useRef, useState, useMemo, memo, forwardRef, useImperativeHandle } from 'react';
 import { Stage, Layer, Line, Circle, Image as KonvaImage } from 'react-konva';
 import { useCanvasStore } from '../store/canvasStore';
 import { calculateCanvasLayout, type CanvasLayout } from '../utils/canvas-math';
@@ -220,14 +220,24 @@ const CircleRenderer = memo(function CircleRenderer({
  * />
  * ```
  */
-export function DrawingCanvas({
+export const DrawingCanvas = memo(forwardRef<Konva.Stage, DrawingCanvasProps>(function DrawingCanvas({
     imageUrl,
     imageWidth,
     imageHeight,
     className = '',
-}: DrawingCanvasProps) {
+}, ref) {
     // Refs
     const containerRef = useRef<HTMLDivElement>(null);
+    // Use internal ref if forwarded ref is not provided, or merge them?
+    // Since Konva Stage doesn't support function refs easily in React-Konva types without casting, 
+    // we'll stick to a simple ref assignment if provided.
+    // However, useCanvasGestures needs a ref. We should maintain a local ref and sync it, or use the forwarded ref.
+    // Easier: use a local ref for gestures, and useImperativeHandle or simple assignment to expose it.
+
+    // Better approach: use an internal ref for the Stage, and useImperativeHandle to expose it.
+    const internalStageRef = useRef<Konva.Stage>(null);
+
+    useImperativeHandle(ref, () => internalStageRef.current as Konva.Stage);
 
     // Hooks
     const containerSize = useContainerSize(containerRef);
@@ -305,9 +315,9 @@ export function DrawingCanvas({
     }, [currentWidth, layout, imageWidth]);
 
     // Hook de gestion des gestes (zoom/pan)
-    const stageRef = useRef<Konva.Stage>(null);
+    // On passe internalStageRef
     const { transform, gestureProps, isGesturing, resetView } = useCanvasGestures({
-        stageRef,
+        stageRef: internalStageRef,
     });
 
     // Hook de gestion des événements de dessin
@@ -358,7 +368,7 @@ export function DrawingCanvas({
             {...gestureProps()}
         >
             <Stage
-                ref={stageRef}
+                ref={internalStageRef}
                 width={layout.stageWidth}
                 height={layout.stageHeight}
                 scaleX={transform.scale}
@@ -433,4 +443,4 @@ export function DrawingCanvas({
             />
         </div>
     );
-}
+}));
