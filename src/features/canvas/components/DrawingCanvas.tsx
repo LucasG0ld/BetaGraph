@@ -41,6 +41,8 @@ export interface DrawingCanvasProps {
     imageHeight: number;
     /** Classe CSS additionnelle pour le conteneur */
     className?: string;
+    /** Mode lecture seule (désactive le dessin et la toolbar) */
+    readonly?: boolean;
 }
 
 /**
@@ -225,6 +227,7 @@ export const DrawingCanvas = memo(forwardRef<Konva.Stage, DrawingCanvasProps>(fu
     imageWidth,
     imageHeight,
     className = '',
+    readonly = false,
 }, ref) {
     // Refs
     const containerRef = useRef<HTMLDivElement>(null);
@@ -321,6 +324,7 @@ export const DrawingCanvas = memo(forwardRef<Konva.Stage, DrawingCanvasProps>(fu
     });
 
     // Hook de gestion des événements de dessin
+    // On ne l'active que si !readonly pour optimiser, ou on ignore les events
     const { handlePointerDown, handlePointerMove, handlePointerUp } = useCanvasDrawing({
         layout,
         imageWidth,
@@ -375,10 +379,11 @@ export const DrawingCanvas = memo(forwardRef<Konva.Stage, DrawingCanvasProps>(fu
                 scaleY={transform.scale}
                 x={transform.x}
                 y={transform.y}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerLeave={handlePointerUp}
+                // Désactiver les handlers de dessin en mode readonly
+                onPointerDown={!readonly ? handlePointerDown : undefined}
+                onPointerMove={!readonly ? handlePointerMove : undefined}
+                onPointerUp={!readonly ? handlePointerUp : undefined}
+                onPointerLeave={!readonly ? handlePointerUp : undefined}
             >
                 {/* Layer 1: Image de fond */}
                 <Layer>
@@ -419,8 +424,8 @@ export const DrawingCanvas = memo(forwardRef<Konva.Stage, DrawingCanvasProps>(fu
                         ) : null
                     )}
 
-                    {/* Tracé en cours (temps réel) */}
-                    {isDrawing && currentLinePoints.length >= 2 && (
+                    {/* Tracé en cours (seulement si !readonly) */}
+                    {!readonly && isDrawing && currentLinePoints.length >= 2 && (
                         <Line
                             points={currentLinePoints}
                             stroke={currentColor}
@@ -436,11 +441,13 @@ export const DrawingCanvas = memo(forwardRef<Konva.Stage, DrawingCanvasProps>(fu
                 </Layer>
             </Stage>
 
-            {/* Toolbar flottante */}
-            <CanvasToolbar
-                onResetView={resetView}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10"
-            />
+            {/* Toolbar flottante (Masquée en readonly) */}
+            {!readonly && (
+                <CanvasToolbar
+                    onResetView={resetView}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10"
+                />
+            )}
         </div>
     );
 }));

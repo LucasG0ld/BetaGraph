@@ -822,9 +822,9 @@
 ## Phase 8 : Partage & OpenGraph (Visionneuse Publique)
 
 ### 8.1 - Page Visionneuse Publique (Ex-7.8)
-- [ ] Créer `app/(public)/boulder/[id]/page.tsx`
-- [ ] Layout spécifique (sans sidebar/edit controls)
-- [ ] Affichage lecture seule du Canvas
+- [x] Créer `app/(public)/boulder/[id]/page.tsx`
+- [x] Layout spécifique (sans sidebar/edit controls)
+- [x] Affichage lecture seule du Canvas
 
 ### 8.2 - Génération de Thumbnail (Canvas Snapshot)
 - [x] Créer `src/features/share/utils/generateThumbnail.ts`
@@ -834,10 +834,10 @@
 - [x] Action `publishBoulder` (is_public = true)
 
 ### 8.4 - Meta Tags OpenGraph Dynamiques
-- [ ] `generateMetadata()` avec image thumbnail
+- [x] `generateMetadata()` avec image thumbnail
 
 ### 8.5 - Composant Partage
-- [ ] `ShareButton.tsx` (Copy Link / Native Share)
+- [x] `ShareButton.tsx` (Copy Link / Native Share)
 
 ### ✅ Validation Phase 8
 - [ ] Test publication et partage

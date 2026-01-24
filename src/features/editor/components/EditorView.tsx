@@ -6,10 +6,7 @@ import { ConflictResolutionModal } from '@/features/boulder/components/ConflictR
 import { useLoadBeta } from '@/features/boulder/hooks/useLoadBeta';
 import { CanvasToolbar } from '@/features/canvas/components/CanvasToolbar';
 import { DrawingCanvas } from '@/features/canvas/components/DrawingCanvas';
-import { SaveIndicator } from '@/features/canvas/components/SaveIndicator';
 import { useAutoSave } from '@/features/canvas/hooks/useAutoSave';
-import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState, useRef } from 'react';
 import { generateBetaThumbnail } from '@/features/share/utils/generate-thumbnail';
